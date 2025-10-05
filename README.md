@@ -1,0 +1,17 @@
+# Gerador de Rifas
+
+Este projeto surgiu da necessidade de gerar folhas de rifas personalizadas para o terceirão do colégio que estudo, que anteriormente editava e exportava cada folha manualmente no Excel.
+
+A aplicação utiliza modelos HTML/CSS com placeholders, que são substituídos conforme os dados de cada rifa, e depois gera as folhas de rifa já prontas para a impressão em formato PDF.
+
+## Uso
+
+### 1. Instale as depedências
+```console
+$ npm i
+```
+
+### 2. Execute o programa
+```console
+$ npm start
+```

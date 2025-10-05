@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Template 20L</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Guia para o desenvolvimento */
+    body, header, main, header section {
+      border: 1px dotted #000;
+    }
+
+    /* Remove o guia na impressão */
+    @media print {
+      body, header, main, header section {
+        border: none;
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 15%;
+      text-align: center;
+      padding: 5mm 0mm;
+    }
+
+    header section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      line-height: 150%;
+    }
+
+    header .vendedor {
+      flex: 0 0 30%;
+    }
+
+    header .dados {
+      flex: 0 0 40%;
+    }
+
+    header {
+      font-size: 11pt;
+    }
+
+    .titulorifa {
+      font-size: 12pt;
+    }
+
+    .nomevendedor {
+      font-size: 10pt;
+    }
+
+    header .logo {
+      flex: 0 0 30%;
+    }
+
+    header .logo img {
+      height: auto;
+      max-width: 50%;
+      object-fit: contain;
+    }
+
+    main {
+      height: 85%;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 5mm;
+    }
+
+    table {
+      border: 1px solid black;
+      border-collapse: collapse;
+      width: 90%;
+      text-align: left;
+      font-size: 12pt;
+    }
+
+    td {
+      border: 1px solid black;
+      padding: 12px 10px; /* Altura das linhas */
+    }
+
+    td:first-child {
+      width: 10%;
+      text-align: left;
+    }
+
+    td:last-child {
+      width: 90%;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <section class="vendedor">
+      <p>VENDEDOR:</p>
+      <p class="nomevendedor">{{VENDEDOR}}</p>
+    </section>
+
+    <section class="dados">
+      <p class="titulorifa"><b>{{RIFA}}</b></p>
+      <p>PREMIAÇÃO: {{PREMIAÇÃO}}</p>
+      <p>DATA: {{DATA}}</p>
+      <p>PREÇO: R$ {{PREÇO}}</p>
+    </section>
+
+    <section class="logo">
+      <img src="img/template-logo.png" alt="Template Logo">
+    </section>
+  </header>
+  <main>
+    <table>
+      <tr>
+        <td>{{N1}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N2}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N3}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N4}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N5}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N6}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N7}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N8}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N9}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N10}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N11}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N12}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N13}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N14}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N15}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N16}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N17}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N18}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N19}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{N20}}</td>
+        <td></td>
+      </tr>
+    </table>
+  </main>
+</body>
+
+</html>
