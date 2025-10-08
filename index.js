@@ -1,5 +1,5 @@
 import { createInterface } from 'node:readline';
-import { gerarRifa } from './gerarRifa.js';
+import { gerarRifa } from './utils/gerarRifa.js';
 
 const rl = createInterface({
   input: process.stdin,
