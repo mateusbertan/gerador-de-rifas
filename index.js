@@ -1,5 +1,6 @@
 import { createInterface } from 'node:readline';
 import { gerarRifa } from './utils/gerarRifa.js';
+import logger from './utils/logger.js';
 
 const rl = createInterface({
   input: process.stdin,
@@ -12,7 +13,7 @@ function ask(question) {
   });
 };
 
-console.log("Seja bem-vindo ao gerador de rifas!\n\n");
+logger.info("Seja bem-vindo ao gerador de rifas!\n\n");
 
 (async () => {
   const nome = await ask("Nome da rifa: ");
@@ -32,8 +33,8 @@ console.log("Seja bem-vindo ao gerador de rifas!\n\n");
 
   const rifa = { nome, premiacao, data, preco, vendedor, paginas, template };
 
-  console.log("\nDados da rifa:");
-  console.log(rifa);
+  logger.info("\nDados da rifa:");
+  logger.info(rifa);
 
   const confirm = await ask("Gerar rifa (s/n)? ");
 
@@ -42,7 +43,7 @@ console.log("Seja bem-vindo ao gerador de rifas!\n\n");
     return;
   }
 
-  console.log("Gerando rifa...");
+  logger.info("Gerando rifa...");
   gerarRifa(rifa);
 
   rl.close();

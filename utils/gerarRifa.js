@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import puppeteer from "puppeteer";
+import logger from './logger.js';
 
 const templatesPath = "./templates";
 const generatedPath = "./rifas_geradas";
@@ -59,7 +59,7 @@ export async function gerarRifa(rifa) {
     margin: { top: "10mm", bottom: "10mm", left: "10mm", right: "10mm" },
   });
 
-  console.log(`Rifa gerada com sucesso: ${outputFile}`);
+  logger.info(`Rifa gerada com sucesso: ${outputFile}`);
 
   await browser.close();
 }
