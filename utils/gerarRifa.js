@@ -1,9 +1,9 @@
 import fs from 'node:fs';
-import puppeteer from "puppeteer";
+import puppeteer from 'puppeteer';
 import logger from './logger.js';
 
-const templatesPath = "./templates";
-const generatedPath = "./rifas_geradas";
+const templatesPath = './templates';
+const generatedPath = './rifas_geradas';
 
 export async function gerarRifa(rifa) {
   const template = fs.readFileSync(`${templatesPath}/template_${rifa.template}l.html`, "utf8");
@@ -11,7 +11,7 @@ export async function gerarRifa(rifa) {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  let htmlFinal = "";
+  let htmlFinal = '';
   let numeroAtual = 1;
 
   for (let i = 0; i < rifa.paginas; i++) {
@@ -24,7 +24,7 @@ export async function gerarRifa(rifa) {
 
     // Temporário enquanto não faço o sistema de imagem
     const imgPath = `${templatesPath}/img/template-logo.png`;
-    const imgBase64 = fs.readFileSync(imgPath, { encoding: "base64" });
+    const imgBase64 = fs.readFileSync(imgPath, { encoding: 'base64' });
 
     html = html.replace(
       '<img src="img/template-logo.png" alt="Template Logo">',
@@ -44,7 +44,7 @@ export async function gerarRifa(rifa) {
     `;
   }
 
-  await page.setContent(htmlFinal, { waitUntil: "networkidle0" });
+  await page.setContent(htmlFinal, { waitUntil: 'networkidle0' });
 
   if (!fs.existsSync(generatedPath)) {
     fs.mkdirSync(generatedPath, { recursive: true });
@@ -54,9 +54,9 @@ export async function gerarRifa(rifa) {
 
   await page.pdf({
     path: outputFile,
-    format: "A4",
+    format: 'A4',
     printBackground: true,
-    margin: { top: "10mm", bottom: "10mm", left: "10mm", right: "10mm" },
+    margin: { top: '10mm', bottom: '10mm', left: '10mm', right: '10mm' },
   });
 
   logger.info(`Rifa gerada com sucesso: ${outputFile}`);
