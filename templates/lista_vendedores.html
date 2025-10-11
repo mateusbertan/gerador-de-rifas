@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista Vendedores</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Guia para o desenvolvimento */
+    body, header, main, header section {
+      border: 1px dotted #000;
+    }
+
+    /* Remove o guia na impressão */
+    @media print {
+      body, header, main, header section {
+        border: none;
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 10%;
+      text-align: center;
+      padding: 2mm 0mm;
+      position: relative;
+    }
+
+    header section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      line-height: 150%;
+    }
+
+    header {
+      font-size: 11pt;
+    }
+
+    .titulo {
+      font-size: 12pt;
+    }
+
+    header .dados {
+      flex: 0 0 100%;
+    }
+
+    header .logo {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30%;
+      display: flex;
+      align-items: center;
+    }
+
+    header .logo img {
+      height: auto;
+      max-width: 38%;
+      object-fit: contain;
+    }
+
+    main {
+      height: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 5mm;
+    }
+
+    table {
+      border: 1px solid black;
+      border-collapse: collapse;
+      width: 90%;
+      text-align: left;
+      font-size: 11pt;
+    }
+
+    td, th {
+      border: 1px solid black;
+      padding: 6px 8px; /* Altura das linhas */
+      text-align: left;
+    }
+
+    td:nth-child(1) {
+      width: 50%;
+    }
+
+    td:nth-child(2) {
+      width: 20%;
+    }
+
+    td:nth-child(3), td:nth-child(4) {
+      width: 15%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <section class="dados">
+      <p class="titulo"><b>LISTA DE VENDEDORES</b></p>
+      <p>{{RIFA}}</p>
+      <p>TURMA: {{TURMA}}</p>
+    </section>
+
+    <section class="logo">
+      <img src="img/logo.png" alt="Template Logo">
+    </section>
+  </header>
+  <main>
+    <table>
+      <tr>
+        <th>NOME</th>
+        <th>NÚMEROS</th>
+        <th>PAGO</th>
+        <th>ENTREGUE</th>
+      </tr>
+      <tr>
+        <td>{{NOME1}}</td>
+        <td>{{NUM1}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME2}}</td>
+        <td>{{NUM2}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME3}}</td>
+        <td>{{NUM3}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME4}}</td>
+        <td>{{NUM4}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME5}}</td>
+        <td>{{NUM5}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME6}}</td>
+        <td>{{NUM6}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME7}}</td>
+        <td>{{NUM7}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME8}}</td>
+        <td>{{NUM8}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME9}}</td>
+        <td>{{NUM9}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME10}}</td>
+        <td>{{NUM10}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME11}}</td>
+        <td>{{NUM11}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME12}}</td>
+        <td>{{NUM12}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME13}}</td>
+        <td>{{NUM13}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME14}}</td>
+        <td>{{NUM14}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME15}}</td>
+        <td>{{NUM15}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME16}}</td>
+        <td>{{NUM16}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME17}}</td>
+        <td>{{NUM17}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME18}}</td>
+        <td>{{NUM18}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME19}}</td>
+        <td>{{NUM19}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME20}}</td>
+        <td>{{NUM20}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME21}}</td>
+        <td>{{NUM21}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME22}}</td>
+        <td>{{NUM22}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME23}}</td>
+        <td>{{NUM23}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME24}}</td>
+        <td>{{NUM24}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME25}}</td>
+        <td>{{NUM25}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME26}}</td>
+        <td>{{NUM26}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME27}}</td>
+        <td>{{NUM27}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME28}}</td>
+        <td>{{NUM28}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME29}}</td>
+        <td>{{NUM29}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>{{NOME30}}</td>
+        <td>{{NUM30}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </main>
+</body>
+
+</html>

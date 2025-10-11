@@ -125,6 +125,82 @@
           "{{N30}}"
         ]
       }
+    },
+    {
+      "name": "Lista de Vendedores",
+      "path": "./templates/lista_vendedores.html",
+      "type": "lista_vendedores",
+      "placeholders": {
+        "logo": "img/logo.png",
+        "info": [
+          "{{RIFA}}",
+          "{{TURMA}}"
+        ],
+        "names": [
+          "{{NOME1}}",
+          "{{NOME2}}",
+          "{{NOME3}}",
+          "{{NOME4}}",
+          "{{NOME5}}",
+          "{{NOME6}}",
+          "{{NOME7}}",
+          "{{NOME8}}",
+          "{{NOME9}}",
+          "{{NOME10}}",
+          "{{NOME11}}",
+          "{{NOME12}}",
+          "{{NOME13}}",
+          "{{NOME14}}",
+          "{{NOME15}}",
+          "{{NOME16}}",
+          "{{NOME17}}",
+          "{{NOME18}}",
+          "{{NOME19}}",
+          "{{NOME20}}",
+          "{{NOME21}}",
+          "{{NOME22}}",
+          "{{NOME23}}",
+          "{{NOME24}}",
+          "{{NOME25}}",
+          "{{NOME26}}",
+          "{{NOME27}}",
+          "{{NOME28}}",
+          "{{NOME29}}",
+          "{{NOME30}}"
+        ],
+        "numbers": [
+          "{{NUM1}}",
+          "{{NUM2}}",
+          "{{NUM3}}",
+          "{{NUM4}}",
+          "{{NUM5}}",
+          "{{NUM6}}",
+          "{{NUM7}}",
+          "{{NUM8}}",
+          "{{NUM9}}",
+          "{{NUM10}}",
+          "{{NUM11}}",
+          "{{NUM12}}",
+          "{{NUM13}}",
+          "{{NUM14}}",
+          "{{NUM15}}",
+          "{{NUM16}}",
+          "{{NUM17}}",
+          "{{NUM18}}",
+          "{{NUM19}}",
+          "{{NUM20}}",
+          "{{NUM21}}",
+          "{{NUM22}}",
+          "{{NUM23}}",
+          "{{NUM24}}",
+          "{{NUM25}}",
+          "{{NUM26}}",
+          "{{NUM27}}",
+          "{{NUM28}}",
+          "{{NUM29}}",
+          "{{NUM30}}"
+        ]
+      }
     }
   ]
 }
