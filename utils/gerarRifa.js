@@ -6,7 +6,7 @@ const templatesPath = './templates';
 const generatedPath = './rifas_geradas';
 
 export async function gerarRifa(rifa) {
-  const template = fs.readFileSync(`${templatesPath}/template_${rifa.template}l.html`, "utf8");
+  const template = fs.readFileSync(`${templatesPath}/rifa_${rifa.template}l.html`, "utf8");
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -17,18 +17,14 @@ export async function gerarRifa(rifa) {
   for (let i = 0; i < rifa.paginas; i++) {
     let html = template
       .replace(/{{VENDEDOR}}/g, rifa.vendedor)
-      .replace(/{{RIFA}}/g, rifa.nome)
-      .replace(/{{PREMIAÇÃO}}/g, rifa.premiacao)
+      .replace(/{{RIFA}}/g, rifa.nome.toUpperCase())
+      .replace(/{{PREMIAÇÃO}}/g, rifa.premiacao.toUpperCase())
       .replace(/{{DATA}}/g, rifa.data)
       .replace(/{{PREÇO}}/g, rifa.preco);
 
-    // Temporário enquanto não faço o sistema de imagem
-    const imgPath = `${templatesPath}/img/template-logo.png`;
-    const imgBase64 = fs.readFileSync(imgPath, { encoding: 'base64' });
-
     html = html.replace(
-      '<img src="img/template-logo.png" alt="Template Logo">',
-      `<img src="data:image/png;base64,${imgBase64}" alt="Logo">`
+      '<img src="img/logo.png" alt="Template Logo">',
+      `<img src="${rifa.logo}" alt="Logo">`
     );
 
     for (let n = 1; n <= rifa.template; n++) {
