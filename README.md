@@ -16,6 +16,14 @@ $ npm i
 ```
 
 ### 2. Execute o programa
+
+#### Versão Web
 ```console
 $ npm start
+```
+
+#### Versão CLI
+
+```console
+$ npm run cli
 ```

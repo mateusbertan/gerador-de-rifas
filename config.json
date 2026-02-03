@@ -1,5 +1,6 @@
 {
-  "debug": true,
+  "serverPort": 3000,
+  "debug": false,
   "templates": [
     {
       "name": "Rifa de 20 linhas",

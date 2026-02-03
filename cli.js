@@ -30,6 +30,8 @@ async function ask(question, validation, errorMessage) {
 
 logger.info('Seja bem-vindo ao gerador de rifas!');
 
+const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
+
 (async () => {
   const nomeInput = await ask(
     'Nome da rifa: ',
@@ -77,8 +79,6 @@ logger.info('Seja bem-vindo ao gerador de rifas!');
     'Logo (URL): ',
     async (url) => {
       try {
-        const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
-
         const response = await axios.get(url, { responseType: 'arraybuffer', timeout: 8000 });
         
         const resizedBuffer = await sharp(response.data)
@@ -94,7 +94,7 @@ logger.info('Seja bem-vindo ao gerador de rifas!');
         
       } catch (e) {
         return false;
-      }
+      };
     },
     'Erro: Não foi possível processar a imagem. Verifique a URL!'
   );
@@ -119,7 +119,7 @@ logger.info('Seja bem-vindo ao gerador de rifas!');
 💰 Valor:     R$ ${rifa.preco}
 📄 Páginas:   ${rifa.paginas} páginas
 🎨 Layout:    Template ${rifa.template} linhas
-🖼️ Logo:      ${rifa.logo}
+🖼️ Logo:      ${rifa.logo ? "Carregada!" : "Não enviada!"}
 ============================================
 `;
 

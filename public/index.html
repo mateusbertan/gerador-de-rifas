@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Rifas</title>
+  <meta name="description" content="Gere folhas de rifa automaticamente a partir dos dados de cada rifa e exporte-as para PDF pronto para impressão.">
+  <link rel="prefetch" href="style.css">
+  <link rel="prefetch" href="script.js">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css" blocking="render">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>GERADOR DE RIFAS</h1>
+  </header>
+
+  <main>
+    <section class="dados">
+      <h2>Dados:</h2>
+      <form id="dados" name="dados" action="/gerar-rifa" method="post">
+        <div class="inputs">
+          <label for="nome">Nome:</label>
+          <input type="text" name="nome" id="nome" placeholder="Ex.: Rifa de Páscoa" minlength="4" maxlength="25" required>
+
+          <label for="premiacao">Premiação:</label>
+          <input type="text" name="premiacao" id="premiacao" placeholder="Ex.: Cesta de Chocolates" minlength="4" maxlength="20" required>
+
+          <label for="data">Data:</label>
+          <input type="text" name="data" id="data" placeholder="Ex.: 06/04" minlength="5" maxlength="5" required>
+
+          <label for="preco">Preço:</label>
+          <div class="precoInput">
+            <span>R$</span><input type="text" name="preco" id="preco" placeholder="Ex.: 2,00" minlength="4" maxlength="5" min="0,01" max="99,99" required>
+          </div>
+
+          <label for="logo">Logo:</label>
+          <input type="file" accept="image/*" multiple="false" capture name="logo" id="logo" required>
+
+          <!-- TODO
+          <label for="vendedor">Vendedor:</label>
+          <select name="vendedor" id="vendedor" required>
+            <option value="false">Manual</option>
+            <option value="true">Automático</option>
+          </select>
+
+          <label for="listaVendedores" style="display: none;">Lista de Vendedores:</label>
+          <input type="file" accept=".txt" multiple="false" capture name="listaVendedores" id="listaVendedores" style="display: none;">
+          -->
+
+          <label for="paginas">Q. de Páginas:</label>
+          <input type="number" name="paginas" id="paginas" placeholder="Ex.: 300" min="1" max="1000" required>
+
+          <label for="numeros">N. por página:</label>
+          <select name="numeros" id="numeros" required>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+          </select>
+        </div>
+      </form>
+    </section>
+
+    <section class="info">
+      <h2>Informações:</h2>
+      <p>...</p>
+      <p>...</p>
+      <p>...</p>
+      <p>...</p>
+      <p>...</p>
+      <p>...</p>
+      <button id="submitButton" type="submit" form="dados">Gerar</button>
+    </section>
+
+    <section class="preview">
+      <h2>Preview:</h2>
+      <div class="previewContainer">
+        <iframe id="preview" name="preview" src="/templates/rifa_20l.html" title="Preview" frameborder="0"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Desenvolvido por <a target="_blank" href="https://github.com/mateusbertan">Mateus Bertan</a></p>
+  </footer>
+</body>
+
+</html>
