@@ -1,4 +1,5 @@
 {
+  "debug": true,
   "templates": [
     {
       "name": "Rifa de 20 linhas",
