@@ -6,6 +6,10 @@ A aplicação utiliza modelos HTML/CSS com placeholders, que são substituídos 
 
 ## Uso
 
+Requisitos:
+- Node.js
+- NPM
+
 ### 1. Instale as depedências
 ```console
 $ npm i

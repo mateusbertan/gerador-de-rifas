@@ -1,6 +1,6 @@
 {
   "name": "gerador-de-rifas",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Gerador de rifas para o terceirão.",
   "license": "UNLICENSED",
@@ -11,6 +11,10 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "puppeteer": "^24.23.0"
+"axios": "^1.13.4",
+    "pdf-lib": "^1.17.1",
+    "puppeteer": "^24.23.0",
+"sharp": "^0.34.5",
+    "winston": "^3.19.0"
   }
 }

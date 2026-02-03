@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lista Vendedores</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Guia para o desenvolvimento */
+    body {
+      border: 3px dotted #000;
+    }
+
+    /* Remove o guia na impressão */
+    @media print {
+      body {
+        border: none;
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 10%;
+      text-align: center;
+      padding: 2mm 0mm;
+      position: relative;
+    }
+
+    header section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      line-height: 150%;
+    }
+
+    header {
+      font-size: 11pt;
+    }
+
+    .titulo {
+      font-size: 12pt;
+    }
+
+    header .dados {
+      flex: 0 0 100%;
+    }
+
+    header .logo {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30%;
+      display: flex;
+      align-items: center;
+    }
+
+    header .logo img {
+      height: auto;
+      max-width: 38%;
+      object-fit: contain;
+    }
+
+    main {
+      height: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+      padding: 5mm;
+    }
+
+    table {
+      border: 1px solid black;
+      border-collapse: collapse;
+      width: 90%;
+      text-align: left;
+      font-size: 11pt;
+    }
+
+    td, th {
+      border: 1px solid black;
+      padding: 6px 8px; /* Altura das linhas */
+      text-align: left;
+    }
+
+    td:nth-child(1) {
+      width: 50%;
+    }
+
+    td:nth-child(2) {
+      width: 20%;
+    }
+
+    td:nth-child(3), td:nth-child(4) {
+      width: 15%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <section class="dados">
+      <p class="titulo"><b>LISTA DE VENDEDORES</b></p>
+      <p><span data-placeholder="nome">{{RIFA}}</span></p>
+      <p>TURMA: <span data-placeholder="turma">{{TURMA}}</span></p>
+    </section>
+
+    <section class="logo">
+      <img src="img/logo.png" alt="Template Logo" data-placeholder="logo">
+    </section>
+  </header>
+  <main>
+    <table>
+      <tr>
+        <th>NOME</th>
+        <th>NÚMEROS</th>
+        <th>PAGO</th>
+        <th>ENTREGUE</th>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome1"></span>{{NOME1}}</span></td>
+        <td><span data-placeholder="num1"></span>{{NUM1}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome2">{{NOME2}}</span></td>
+        <td><span data-placeholder="num2">{{NUM2}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome3">{{NOME3}}</span></td>
+        <td><span data-placeholder="num3">{{NUM3}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome4">{{NOME4}}</span></td>
+        <td><span data-placeholder="num4">{{NUM4}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome5">{{NOME5}}</span></td>
+        <td><span data-placeholder="num5">{{NUM5}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome6">{{NOME6}}</span></td>
+        <td><span data-placeholder="num6">{{NUM6}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome7">{{NOME7}}</span></td>
+        <td><span data-placeholder="num7">{{NUM7}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome8">{{NOME8}}</span></td>
+        <td><span data-placeholder="num8">{{NUM8}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome9">{{NOME9}}</span></td>
+        <td><span data-placeholder="num9">{{NUM9}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome10">{{NOME10}}</span></td>
+        <td><span data-placeholder="num10">{{NUM10}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome11">{{NOME11}}</span></td>
+        <td><span data-placeholder="num11">{{NUM11}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome12">{{NOME12}}</span></td>
+        <td><span data-placeholder="num12">{{NUM12}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome13">{{NOME13}}</span></td>
+        <td><span data-placeholder="num13">{{NUM13}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome14">{{NOME14}}</span></td>
+        <td><span data-placeholder="num14">{{NUM14}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome15">{{NOME15}}</span></td>
+        <td><span data-placeholder="num15">{{NUM15}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome16">{{NOME16}}</span></td>
+        <td><span data-placeholder="num16">{{NUM16}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome17">{{NOME17}}</span></td>
+        <td><span data-placeholder="num17">{{NUM17}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome18">{{NOME18}}</span></td>
+        <td><span data-placeholder="num18">{{NUM18}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome19">{{NOME19}}</span></td>
+        <td><span data-placeholder="num19">{{NUM19}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome20">{{NOME20}}</span></td>
+        <td><span data-placeholder="num20">{{NUM20}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome21">{{NOME21}}</span></td>
+        <td><span data-placeholder="num21">{{NUM21}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome22">{{NOME22}}</span></td>
+        <td><span data-placeholder="num22">{{NUM22}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome23">{{NOME23}}</span></td>
+        <td><span data-placeholder="num23">{{NUM23}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome24">{{NOME24}}</span></td>
+        <td><span data-placeholder="num24">{{NUM24}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome25">{{NOME25}}</span></td>
+        <td><span data-placeholder="num25">{{NUM25}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome26">{{NOME26}}</span></td>
+        <td><span data-placeholder="num26">{{NUM26}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome27">{{NOME27}}</span></td>
+        <td><span data-placeholder="num27">{{NUM27}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome28">{{NOME28}}</span></td>
+        <td><span data-placeholder="num28">{{NUM28}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome29">{{NOME29}}</span></td>
+        <td><span data-placeholder="num29">{{NUM29}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span data-placeholder="nome30">{{NOME30}}</span></td>
+        <td><span data-placeholder="num30">{{NUM30}}</span></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </main>
+</body>
+
+</html>
