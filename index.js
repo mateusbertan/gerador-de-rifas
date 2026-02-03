@@ -1,5 +1,5 @@
 import { createInterface } from 'node:readline';
-import { gerarRifa } from './utils/gerarRifa.js';
+import gerarRifa from './utils/gerarRifa.js';
 import logger from './utils/logger.js';
 
 const rl = createInterface({
