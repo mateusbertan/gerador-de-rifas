@@ -20,9 +20,9 @@ export default async function gerarRifa(rifa) {
 
   for (let i = 0; i < rifa.paginas; i++) {
     let html = template
-      .replace(/{{VENDEDOR}}/g, rifa.vendedor)
-      .replace(/{{RIFA}}/g, rifa.nome.toUpperCase())
-      .replace(/{{PREMIAÇÃO}}/g, rifa.premiacao.toUpperCase())
+      .replace(/{{VENDEDOR}}/g, '________________')
+      .replace(/{{RIFA}}/g, rifa.nome)
+      .replace(/{{PREMIAÇÃO}}/g, rifa.premiacao)
       .replace(/{{DATA}}/g, rifa.data)
       .replace(/{{PREÇO}}/g, rifa.preco)
       .replace(/<img[^>]+>/, `<img src="${rifa.logo}" alt="Logo">`);
