@@ -1,6 +1,6 @@
 {
   "name": "gerador-de-rifas",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "repository": "mateusbertan/gerador-de-rifas",
   "private": true,
   "description": "Script para gerar folhas de rifa automaticamente a partir dos dados de cada rifa e exporta-las para PDF pronto para impressão.",
