@@ -11,11 +11,22 @@ Requisitos:
 - NPM
 
 ### 1. Instale as depedências
-```console
+```shell
 $ npm i
 ```
 
 ### 2. Execute o programa
-```console
+
+#### Versão Web
+```shell
 $ npm start
 ```
+
+#### Versão CLI
+
+```shell
+$ npm run cli
+```
+## TODO
+* Modo de vendedor automático
+* Refatoração do código
