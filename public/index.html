@@ -6,14 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerador de Rifas</title>
   <meta name="description" content="Gere folhas de rifa automaticamente a partir dos dados de cada rifa e exporte-as para PDF pronto para impressão.">
-  <link rel="prefetch" href="style.css">
-  <link rel="prefetch" href="script.js">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="style.css" blocking="render">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
-  <script src="script.js" defer></script>
+
+  <script src="script.js" type="module" defer></script>
 </head>
 
 <body>
@@ -24,41 +27,134 @@
   <main>
     <section class="dados">
       <h2>Dados:</h2>
-      <form id="dados" name="dados" action="/gerar-rifa" method="post">
+
+      <form id="dados" name="dados">
         <div class="inputs">
           <label for="nome">Nome:</label>
-          <input type="text" name="nome" id="nome" placeholder="Ex.: Rifa de Páscoa" minlength="4" maxlength="25" required>
+          <input
+            type="text"
+            name="nome"
+            id="nome"
+            title="Nome da sua rifa"
+            placeholder="Ex.: Rifa de Páscoa"
+            minlength="4"
+            maxlength="25"
+            required
+          >
 
           <label for="premiacao">Premiação:</label>
-          <input type="text" name="premiacao" id="premiacao" placeholder="Ex.: Cesta de Chocolates" minlength="4" maxlength="20" required>
+          <input
+            type="text"
+            name="premiacao"
+            id="premiacao"
+            title="Premiação da sua rifa"
+            placeholder="Ex.: Cesta de Chocolates"
+            minlength="4"
+            maxlength="20"
+            required
+          >
 
           <label for="data">Data:</label>
-          <input type="text" name="data" id="data" placeholder="Ex.: 06/04" minlength="5" maxlength="5" required>
+          <input
+            type="text"
+            name="data"
+            id="data"
+            title="Data do sorteio (DD/MM)"
+            placeholder="Ex.: 06/04"
+            pattern="\d{2}/\d{2}"
+            maxlength="5"
+            required
+          >
 
           <label for="preco">Preço:</label>
           <div class="precoInput">
-            <span>R$</span><input type="text" name="preco" id="preco" placeholder="Ex.: 2,00" minlength="4" maxlength="5" min="0,01" max="99,99" required>
+            <span>R$</span>
+            <input
+              type="text"
+              name="preco"
+              id="preco"
+              title="Preço de cada número da rifa"
+              placeholder="Ex.: 2,00"
+              minlength="4"
+              maxlength="5"
+              min="0,01"
+              max="99,99"
+              required
+            >
           </div>
 
           <label for="logo">Logo:</label>
-          <input type="file" accept="image/*" multiple="false" capture name="logo" id="logo" required>
+          <input
+            type="file"
+            accept="image/*"
+            title="Envie o arquivo da logo"
+            multiple="false"
+            name="logo"
+            id="logo"
+            required
+          >
 
-          <!-- TODO
+          <!-- TODO -->
           <label for="vendedor">Vendedor:</label>
-          <select name="vendedor" id="vendedor" required>
+          <select name="vendedor" id="vendedor" required disabled>
             <option value="false">Manual</option>
             <option value="true">Automático</option>
           </select>
 
-          <label for="listaVendedores" style="display: none;">Lista de Vendedores:</label>
-          <input type="file" accept=".txt" multiple="false" capture name="listaVendedores" id="listaVendedores" style="display: none;">
-          -->
+          <label for="listaVendedores" style="display: none;">Lista de vendedores:</label>
+          <input
+            type="file"
+            accept=".txt"
+            multiple="false"
+            title="Envie o arquivo da lista de vendedores"
+            name="listaVendedores"
+            id="listaVendedores"
+            style="display: none;"
+          >
 
-          <label for="paginas">Q. de Páginas:</label>
-          <input type="number" name="paginas" id="paginas" placeholder="Ex.: 300" min="1" max="1000" required>
+          <label for="folhasPorVendedor" style="display: none;">Folhas por vendedor:</label>
+          <input
+            type="text"
+            name="folhasPorVendedor"
+            id="folhasPorVendedor"
+            title="Folhas de rifa por vendedor"
+            placeholder="Ex.: 2"
+            minlength="1"
+            maxlength="1"
+            min="1"
+            max="5"
+            style="display: none;"
+          >
 
-          <label for="numeros">N. por página:</label>
-          <select name="numeros" id="numeros" required>
+          <label for="folhasExtra" style="display: none;">Folhas extra:</label>
+          <input
+            type="text"
+            name="folhasExtra"
+            id="folhasExtra"
+            title="Folhas extra"
+            placeholder="Ex.: 50"
+            minlength="1"
+            maxlength="2"
+            min="0"
+            max="300"
+            style="display: none;"
+          >
+
+          <label for="quantidadeDeFolhas">Quantidade de folhas:</label>
+          <input
+            type="text"
+            inputmode="numeric"
+            name="quantidadeDeFolhas"
+            id="quantidadeDeFolhas"
+            title="Quantidade de folhas de rifa"
+            placeholder="Ex.: 300"
+            min="1"
+            max="1000"
+            required
+          >
+
+          <label for="template">Números por folha:</label>
+          <select name="template" id="template" required>
             <option value="20">20</option>
             <option value="25">25</option>
             <option value="30">30</option>
@@ -69,19 +165,50 @@
 
     <section class="info">
       <h2>Informações:</h2>
-      <p>...</p>
-      <p>...</p>
-      <p>...</p>
-      <p>...</p>
-      <p>...</p>
-      <p>...</p>
+
+      <!-- TODO -->
+      <div class="infoContainer">
+        <p>...</p>
+        <p>...</p>
+        <p>...</p>
+        <p>...</p>
+        <p>...</p>
+      </div>
+
+      <div class="message" style="visibility: hidden;" id="message">
+        <p>Messagem</p>
+      </div>
+
+      <div class="progress" style="visibility: hidden;" id="progress">
+        <p>Página <strong id="currentPageProgress">0</strong> de <strong id="maxPageProgress">0</strong>...</p>
+        <p id="percentageProgress">0%</p>
+        <div id="progressBar" class="progressBar"></div>
+      </div>
+
       <button id="submitButton" type="submit" form="dados">Gerar</button>
     </section>
 
     <section class="preview">
       <h2>Preview:</h2>
+
       <div class="previewContainer">
         <iframe id="preview" name="preview" src="/templates/rifa_20l.html" title="Preview" frameborder="0"></iframe>
+      </div>
+
+      <div class="pagination">
+        <button class="pageButton previousClick" aria-label="Página Anterior" id="previousPageButton">
+          <svg class="previousClick" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline class="previousClick" points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <span class="pageIndicator">
+          Página <strong id="currentPage">1</strong> de <strong id="totalPages">300</strong>
+        </span>
+        <button class="pageButton nextClick" aria-label="Próxima Página" id="nextPageButton">
+          <svg class="nextClick" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline class="nextClick" points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
     </section>
   </main>
@@ -89,6 +216,16 @@
   <footer>
     <p>Desenvolvido por <a target="_blank" href="https://github.com/mateusbertan">Mateus Bertan</a></p>
   </footer>
+
+  <noscript>
+    <div class="noscript-overlay">
+      <div class="noscript-content">
+        <h1>JavaScript Desativado</h1>
+        <p>Para utilizar este site, você precisa habilitar o JavaScript no seu navegador.</p>
+        <a href="https://www.enable-javascript.com/pt/" target="_blank">Saiba como habilitar</a>
+      </div>
+    </div>
+  </noscript>
 </body>
 
 </html>
