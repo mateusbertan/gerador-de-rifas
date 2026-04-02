@@ -1,6 +1,7 @@
 import { createInterface } from 'node:readline';
 import axios from 'axios';
 import sharp from 'sharp';
+import { randomUUID } from 'crypto';
 
 import gerarRifa from './utils/gerarRifa.js';
 import logger from './utils/logger.js';
@@ -22,7 +23,7 @@ async function ask(question, validation, errorMessage) {
 
     if (result) {
       return typeof result === 'string' ? result : answer;
-    }
+    };
 
     logger.warn(errorMessage);
   };
@@ -60,7 +61,7 @@ const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
     'O preço deve ser entre 0,01 e 99,99!'
   );
 
-  const paginasInput = await ask(
+  const folhasInput = await ask(
     'Quantidade de páginas: ',
     (val) => {
       const n = parseInt(val);
@@ -82,7 +83,7 @@ const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
         const response = await axios.get(url, { responseType: 'arraybuffer', timeout: 8000 });
         
         const resizedBuffer = await sharp(response.data)
-          .resize(256, 256, {
+          .resize(512, 512, {
             fit: 'inside',
             withoutEnlargement: true
           })
@@ -96,7 +97,7 @@ const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
         return false;
       };
     },
-    'Erro: Não foi possível processar a imagem. Verifique a URL!'
+    'Não foi possível processar a imagem. Verifique a URL!'
   );
 
   const rifa = {
@@ -104,22 +105,25 @@ const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
     premiacao: premiacaoInput.toUpperCase(),
     data: dataInput,
     preco: parseFloat(precoInput.replace(',', '.')).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
-    paginas: paginasInput,
+    folhas: folhasInput,
     template: templateInput,
     logo: logoInput 
   };
 
+  const taskId = randomUUID();
+
   const dados = `
 ===========================================
-🚀  DADOS DA RIFA
+               DADOS DA RIFA
 ===========================================
 📌 Nome:      ${rifa.nome.toUpperCase()}
 🎁 Prêmio:    ${rifa.premiacao.toUpperCase()}
 📅 Sorteio:   ${rifa.data}
 💰 Valor:     R$ ${rifa.preco}
-📄 Páginas:   ${rifa.paginas} páginas
+📄 Folhas:    ${rifa.folhas} folhas
 🎨 Layout:    Template ${rifa.template} linhas
 🖼️ Logo:      ${rifa.logo ? "Carregada!" : "Não enviada!"}
+🏷️ ID:        ${taskId}
 ============================================
 `;
 
@@ -135,10 +139,10 @@ const dataRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])$/;
     logger.warn('Operação cancelada. Tchau!');
     rl.close();
     return;
-  }
+  };
 
   logger.info('Gerando rifa...');
-  gerarRifa(rifa);
+  gerarRifa(rifa, taskId);
 
   rl.close();
 })();
