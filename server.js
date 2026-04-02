@@ -65,7 +65,7 @@ app.post('/gerar-rifa', async (req, res) => {
 
   try {
     activeGenerations++;
-    logger.info(`< ${taskId} > Iniciando geração... Ativas: ${activeGenerations}.`);
+    logger.info(`<${taskId}> Iniciando geração... Ativas: ${activeGenerations}.`);
 
     res.status(200).json({
       msg: "Geração iniciada.",
@@ -74,14 +74,14 @@ app.post('/gerar-rifa', async (req, res) => {
 
     await gerarRifa(req.body, taskId, io);
   } catch (error) {
-    logger.error(`< ${taskId} > Erro na geração: ${error.stack}`);
+    logger.error(`<${taskId}> Erro na geração: ${error.stack}`);
     res.status(500).json({
       error: "Falha na geração.",
       taskId: taskId
     });
   } finally {
     activeGenerations--;
-    logger.info(`< ${taskId} > Geração finalizada. Ativas: ${activeGenerations}`);
+    logger.info(`<${taskId}> Geração finalizada. Ativas: ${activeGenerations}`);
   };
 });
 
