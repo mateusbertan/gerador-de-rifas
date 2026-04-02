@@ -18,7 +18,7 @@ export default async function gerarRifa(rifa, taskId, io) {
   let htmlFinal = '';
   let numeroAtual = 1;
 
-  const bar = logger.progress.start(Number(rifa.folhas), 0);
+  const bar = logger.progress.start(Number(rifa.folhas), 0, taskId);
 
   for (let i = 0; i < Number(rifa.folhas); i++) {
     let html = template
@@ -69,7 +69,6 @@ export default async function gerarRifa(rifa, taskId, io) {
   };
 
   logger.progress.stop();
-  logger.info('Salvando o PDF...');
 
   pdfFinal.setTitle(rifa.nome);
   pdfFinal.setProducer('Gerador de Rifas - Desenvolvido por Mateus Bertan');
@@ -89,5 +88,5 @@ export default async function gerarRifa(rifa, taskId, io) {
     url:`/rifas/${taskId}/${rifa.nome}.pdf`
   });
 
-  logger.info(`Rifa gerada com sucesso: ${outputFile}`);
+  logger.info(`<${taskId}> Rifa gerada: ${outputFile}`);
 };

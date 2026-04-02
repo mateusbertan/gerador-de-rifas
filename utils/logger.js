@@ -48,13 +48,13 @@ const logger = createLogger({
 const multibar = new cliProgress.MultiBar({
   clearOnComplete: false,
   hideCursor: true,
-  format: `${colorizer.colorize('timestamp', `[${timestamp()}]`)} ${colorizer.colorize('info', '(INFO) Progresso: {bar} | {percentage}% | {value}/{total} Páginas')}`,
+  format: `${colorizer.colorize('timestamp', `[${timestamp()}]`)} ${colorizer.colorize('info', '(INFO) <{taskId}> Progresso: {bar} | {percentage}% | {value}/{total} Páginas')}`,
   barCompleteChar: '\u2588',
   barIncompleteChar: '\u2591',
 }, cliProgress.Presets.shades_grey);
 
 logger.progress = {
-  start: (total, startValue = 0) => multibar.create(total, startValue),
+  start: (total, startValue = 0, taskId) => multibar.create(total, startValue, { taskId: taskId }),
   stop: () => multibar.stop()
 };
 
