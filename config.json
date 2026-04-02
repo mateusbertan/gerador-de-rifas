@@ -1,6 +1,13 @@
 {
-  "serverPort": 3000,
   "debug": false,
+  "server": {
+    "port": 3000,
+    "url": "http://localhost",
+    "maxConcurrentGenerations": 5,
+    "maxRequestsUntilTimeout": 80,
+    "minutesToRememberTimeout": 5,
+    "requestSizeLimit": "1mb"
+  },
   "templates": [
     {
       "name": "Rifa de 20 linhas",
