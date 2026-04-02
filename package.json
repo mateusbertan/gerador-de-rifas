@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "description": "Script para gerar folhas de rifa automaticamente a partir dos dados de cada rifa e exporta-las para PDF pronto para impressão.",
-  "license": "UNLICENSED",
+  "license": "ISC",
   "author": "Mateus Bertan",
   "type": "module",
   "main": "server.js",
