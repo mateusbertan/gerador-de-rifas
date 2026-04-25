@@ -15,6 +15,8 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+if (process.env.NODE_ENV = 'production') app.set('trust proxy', 1);
+
 app.use(helmet());
 app.disable('x-powered-by');
 app.use(cors({
@@ -68,7 +70,7 @@ app.post('/gerar-rifa', async (req, res) => {
     logger.info(`<${taskId}> Iniciando geração... Ativas: ${activeGenerations}.`);
 
     res.status(200).json({
-      msg: "Geração iniciada.",
+      msg: 'Geração iniciada.',
       taskId: taskId
     });
 
@@ -76,7 +78,7 @@ app.post('/gerar-rifa', async (req, res) => {
   } catch (error) {
     logger.error(`<${taskId}> Erro na geração: ${error.stack}`);
     res.status(500).json({
-      error: "Falha na geração.",
+      error: 'Falha na geração.',
       taskId: taskId
     });
   } finally {
@@ -86,7 +88,7 @@ app.post('/gerar-rifa', async (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).send("Página não encontrada!");
+  res.status(404).send('Página não encontrada!');
   logger.debug(`Página não encontrada: ${req.method} ${req.url} ${req.ip}`);
 });
 
@@ -95,18 +97,18 @@ app.use((err, req, res) => {
 
   if (err.type === 'entity.too.large') {
     return res.status(413).json({
-      error: "Requisição muito grande."
+      error: 'Requisição muito grande.'
     });
   };
 
   if (err.type === 'invalid.json') {
     return res.status(400).json({
-      error: "Requisição inválida."
+      error: 'Requisição inválida.'
     });
   };
 
   res.status(err.status || 500).json({
-    error: "Erro no servidor."
+    error: 'Erro no servidor.'
   });
 });
 

@@ -10,6 +10,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "host": "NODE_ENV=production node server.js",
     "cli": "node cli.js"
   },
   "engines": {

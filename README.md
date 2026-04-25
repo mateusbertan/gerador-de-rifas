@@ -17,10 +17,16 @@ $ npm i
 
 ### 2. Execute o programa
 
-#### Versão Web
+#### Versão Web (local)
 ```shell
 $ npm start
 ```
+
+#### Versão Web (host)
+```shell
+$ npm run host
+```
+> Obs.: Este projeto foi projetado para funcionar com Cloudflare Tunnels, permitindo expor o ambiente local de forma segura. Caso for hospedar de outra forma, recomendo fortemente implementar TLS e outras medidas de segurança.
 
 #### Versão CLI
 
