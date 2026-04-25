@@ -90,6 +90,14 @@ form label {
   row-gap: 5px;
 }
 
+#nome, #premiacao {
+  text-transform: uppercase;
+}
+
+#nome::placeholder, #premiacao::placeholder {
+  text-transform: none;
+}
+
 .precoInput {
   display: grid;
   grid-template-columns: 15% 85%;
@@ -109,19 +117,24 @@ section.info {
   height: 100%;
 }
 
-.progress {
+.infoContainer ul {
+  padding-left: 20px;
+  line-height: 1.5rem;
+}
+
+.progressContainer {
   display: grid;
   grid-template-columns: 1fr auto; 
   gap: 8px;
   width: 100%;
 }
 
-.progress p {
+.progressContainer p {
   margin: 0;
   font-size: 14px;
 }
 
-.progress p:last-of-type {
+.progressContainer p:last-of-type {
   text-align: right;
 }
 
@@ -150,10 +163,6 @@ section.info {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-}
-
-#submitButton a {
-  color: var(--cor-destaque);
 }
 
 /* Main - Preview */
@@ -204,10 +213,6 @@ iframe {
   stroke: #fff;
 }
 
-.pageButton:hover svg {
-  stroke: var(--cor-destaque);
-}
-
 /* Footer */
 
 footer {
@@ -224,9 +229,7 @@ footer p, footer a {
   color: white;
 }
 
-footer a:hover {
-  color: var(--cor-destaque);
-}
+/* No Script */
 
 .noscript-overlay {
   position: fixed;

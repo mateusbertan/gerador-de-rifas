@@ -17,12 +17,31 @@ export default async function gerarRifa(rifa, taskId, io) {
 
   let htmlFinal = '';
   let numeroAtual = 1;
+  let vendedores = [];
+  let totalFolhas;
 
-  const bar = logger.progress.start(Number(rifa.folhas), 0, taskId);
+  if (rifa.vendedor) {
+    const lista = JSON.parse(rifa.listaVendedores);
+    totalFolhas = Number(rifa.folhasExtra) + (Number(rifa.folhasPorVendedor) * Object.values(lista).flat().length);
 
-  for (let i = 0; i < Number(rifa.folhas); i++) {
+    Object.values(lista).flat().forEach((person) => {
+      for (let i = 0; i < Number(rifa.folhasPorVendedor); i++) {
+        vendedores.push(person);
+      };
+    });
+
+    for (let i = 0; i < Number(rifa.folhasExtra); i++) {
+      vendedores.push('________________');
+    };
+  } else {
+    totalFolhas = Number(rifa.folhas);
+  };
+
+  const bar = io ? undefined : logger.progress.start(totalFolhas, 0);
+
+  for (let i = 0; i < totalFolhas; i++) {
     let html = template
-      .replace(/{{VENDEDOR}}/g, '________________')
+      .replace(/{{VENDEDOR}}/g, rifa.vendedor ? vendedores[i] : '________________')
       .replace(/{{RIFA}}/g, rifa.nome.toUpperCase())
       .replace(/{{PREMIAÇÃO}}/g, rifa.premiacao.toUpperCase())
       .replace(/{{DATA}}/g, rifa.data)
@@ -53,12 +72,11 @@ export default async function gerarRifa(rifa, taskId, io) {
     const [copiedPage] = await pdfFinal.copyPages(tempDoc, [0]);
     pdfFinal.addPage(copiedPage);
 
-    const percent = Math.round(((i + 1) / rifa.folhas) * 100);
+    const percent = Math.round(((i + 1) / totalFolhas) * 100);
 
-    bar.increment();
+    if (bar) bar.increment();
 
-    if (io) io.emit(taskId, {
-      type: 'progress',
+    if (io) io.to(taskId).emit('progress', {
       page: i + 1,
       percent
     });
@@ -68,7 +86,7 @@ export default async function gerarRifa(rifa, taskId, io) {
     fs.mkdirSync(`${generatedPath}/${taskId}`, { recursive: true });
   };
 
-  logger.progress.stop();
+  if (bar) logger.progress.stop();
 
   pdfFinal.setTitle(rifa.nome);
   pdfFinal.setProducer('Gerador de Rifas - Desenvolvido por Mateus Bertan');
@@ -83,10 +101,9 @@ export default async function gerarRifa(rifa, taskId, io) {
 
   await browser.close();
 
-  if (io) io.emit(taskId, {
-    type: 'finished',
+  if (io) io.to(taskId).emit('finished', {
     url:`/rifas/${taskId}/${rifa.nome}.pdf`
   });
 
-  logger.info(`<${taskId}> Rifa gerada: ${outputFile}`);
+  if (!io) logger.info(`Rifa gerada: ${outputFile}`);
 };
