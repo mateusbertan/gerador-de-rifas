@@ -485,27 +485,26 @@ async function formSubmit(event) {
     const socket = new io('ws://localhost:3000/');
 
     socket.on('connect', () => {
-      console.log('Websocket connected!');
+      console.log('Websocket conectado!');
+      socket.emit('join-task', data.taskId);
+      buttons.submit.innerText = 'Gerando...';
     });
 
-    socket.on(data.taskId, (data) => {
-      console.log(data);
-      buttons.submit.innerText = 'Gerando...';
+    socket.on('progress', (data) => {
+      console.log(`Progresso: ${data.percent}% | ${data.page} páginas`);
+      progress.currentPage.innerText = data.page;
+      progress.percentage.innerText = `${data.percent}%`;
+      progress.bar.style.setProperty('--progress', `${data.percent}%`);
+    });
 
-      if (data.type === 'progress') {
-        currentPageProgress.innerText = data.page;
-        percentageProgress.innerText = `${data.percent}%`;
-        progressBar.style.setProperty('--progress', `${data.percent}%`);
-      };
-
-      if (data.type === 'finished') {
+    socket.on('finished', (data) => {
+      console.log(`Rifa finalizada: ${data.url}`);
         buttons.submit.innerHTML = `<a href="${data.url}" target="_blank">Finalizado!</a>`;
-      };
     });
   } catch (error) {
     console.error(error);
-    messageElement.style.visibility = 'visible';
-    messageElement.innerHTML = '<p><strong>Erro:</strong> Não foi possível conectar ao servidor.</p>';
+    progress.message.style.visibility = 'visible';
+    progress.message.innerHTML = '<p><strong>Erro:</strong> Não foi possível conectar ao servidor.</p>';
     buttons.submit.disabled = false;
     buttons.submit.innerText = 'Gerar';
     buttons.submit.style.cursor = 'pointer';

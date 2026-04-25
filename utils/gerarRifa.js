@@ -53,12 +53,11 @@ export default async function gerarRifa(rifa, taskId, io) {
     const [copiedPage] = await pdfFinal.copyPages(tempDoc, [0]);
     pdfFinal.addPage(copiedPage);
 
-    const percent = Math.round(((i + 1) / rifa.folhas) * 100);
+    const percent = Math.round(((i + 1) / totalFolhas) * 100);
 
-    bar.increment();
+    if (bar) bar.increment();
 
-    if (io) io.emit(taskId, {
-      type: 'progress',
+    if (io) io.to(taskId).emit('progress', {
       page: i + 1,
       percent
     });
@@ -68,7 +67,7 @@ export default async function gerarRifa(rifa, taskId, io) {
     fs.mkdirSync(`${generatedPath}/${taskId}`, { recursive: true });
   };
 
-  logger.progress.stop();
+  if (bar) logger.progress.stop();
 
   pdfFinal.setTitle(rifa.nome);
   pdfFinal.setProducer('Gerador de Rifas - Desenvolvido por Mateus Bertan');
@@ -83,10 +82,9 @@ export default async function gerarRifa(rifa, taskId, io) {
 
   await browser.close();
 
-  if (io) io.emit(taskId, {
-    type: 'finished',
+  if (io) io.to(taskId).emit('finished', {
     url:`/rifas/${taskId}/${rifa.nome}.pdf`
   });
 
-  logger.info(`<${taskId}> Rifa gerada: ${outputFile}`);
+  if (!io) logger.info(`Rifa gerada: ${outputFile}`);
 };

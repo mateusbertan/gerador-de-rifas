@@ -43,6 +43,12 @@ app.use('/rifas', express.static('rifas_geradas'));
 
 let activeGenerations = 0;
 
+io.on('connection', (socket) => {
+  socket.on('join-task', (taskId) => {
+    if (taskId) socket.join(taskId);
+  });
+});
+
 app.get('/', (req, res) => {
   logger.debug(`Requisição feita: ${req.method} ${req.url} ${req.ip}`);
   res.render('index');
