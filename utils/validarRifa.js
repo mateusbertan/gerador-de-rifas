@@ -57,7 +57,7 @@ export default async function validarRifa(req) {
     };
 
     // Folhas Extra
-    const folhasExtra = parseInt(rifa.folhas);
+    const folhasExtra = parseInt(rifa.folhasExtra);
     if (isNaN(folhasExtra) || folhasExtra < 0 || folhasExtra > 300) {
       return 'A quantidade de folhas extra deve ser um número inteiro entre 0 e 300.';
     };
