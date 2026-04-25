@@ -94,9 +94,8 @@
             required
           >
 
-          <!-- TODO -->
           <label for="vendedor">Vendedor:</label>
-          <select name="vendedor" id="vendedor" required disabled>
+          <select name="vendedor" id="vendedor" required>
             <option value="false">Manual</option>
             <option value="true">Automático</option>
           </select>
@@ -134,7 +133,7 @@
             title="Folhas extra"
             placeholder="Ex.: 50"
             minlength="1"
-            maxlength="2"
+            maxlength="3"
             min="0"
             max="300"
             style="display: none;"
@@ -147,7 +146,7 @@
             name="quantidadeDeFolhas"
             id="quantidadeDeFolhas"
             title="Quantidade de folhas de rifa"
-            placeholder="Ex.: 300"
+            placeholder="Ex.: 100"
             min="1"
             max="1000"
             required
@@ -166,20 +165,21 @@
     <section class="info">
       <h2>Informações:</h2>
 
-      <!-- TODO -->
       <div class="infoContainer">
-        <p>...</p>
-        <p>...</p>
-        <p>...</p>
-        <p>...</p>
-        <p>...</p>
+        <ul>
+          <li><span id="infoNumeros">2000</span> números.</li>
+        </ul>
+        <ul>
+          <li><span id="infoArrecadacao">R$ 4.000,00</span> de arrecação.</li>
+        </ul>
+        <!-- TODO -->
       </div>
 
       <div class="message" style="visibility: hidden;" id="message">
         <p>Messagem</p>
       </div>
 
-      <div class="progress" style="visibility: hidden;" id="progress">
+      <div class="progressContainer" style="visibility: hidden;" id="progressContainer">
         <p>Página <strong id="currentPageProgress">0</strong> de <strong id="maxPageProgress">0</strong>...</p>
         <p id="percentageProgress">0%</p>
         <div id="progressBar" class="progressBar"></div>
@@ -202,7 +202,7 @@
           </svg>
         </button>
         <span class="pageIndicator">
-          Página <strong id="currentPage">1</strong> de <strong id="totalPages">300</strong>
+          Página <strong id="currentPage">1</strong> de <strong id="totalPages">100</strong>
         </span>
         <button class="pageButton nextClick" aria-label="Próxima Página" id="nextPageButton">
           <svg class="nextClick" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
