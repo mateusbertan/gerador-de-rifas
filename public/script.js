@@ -24,13 +24,9 @@
  * template           = número 20, 25 ou 30.
  * vendedor           = string "manual" ou "auto".
  * quantidadeDeFolhas = número entre 1 e 1000.
- * listaVendedores    = objeto com turmas e vendedores (max 5 turmas e 50 vendedores por turma).
+ * listaVendedores    = objeto com turmas e vendedores (máximo de 5 turmas e 35 vendedores por turma).
  * folhasPorVendedor  = número entre 1 e 5.
  * folhasExtra        = número entre 0 e 300.
- *
- * OBS.: A quantidade de folhas totais (que é a quantidade de folhas, caso vendedor seja "manual", ou a quantidade de folhas atribuídas para
- *       cada vendedor multiplicado pela a quantidade de vendedores e depois somado pela quantidade de folhas extras, caso vendedor seja "auto")
- *       deve ser menor que 1000.
  */
 
 /* ------------------------------- FUNÇÕES -------------------------------
@@ -45,11 +41,17 @@
  *    2.3. Máscara do número de folhas
  *           Valida se os caracteres correspondem ao esperado (somente números) e se formam um valor dentro
  *           do máximo esperando. Além disso, também atualiza a variável de página máxima.
+ *    2.4. Máscara das folhas por vendedor
+ *           Valida se os caracteres correspondem ao esperado (somente números) e se formam um valor dentro
+ *           do máximo esperando.
+ *    2.5. Máscara das folhas extra
+ *           Valida se os caracteres correspondem ao esperado (somente números) e se formam um valor dentro
+ *           do máximo esperando.
  * 3. Alternação dos inputs dependendo do tipo de vendedor
  *      Identifica se o input do vendendor é "auto" ou "manual" e altera o display, required e value dos respectivos inputs e labels.
  * 4. Atualização em tempo real do preview
  *      Altera os valores dos placeholders do preview com os valores padrão, e adiciona um evento para atualizar os placeholders após
- *      qualquer alteração no valor dos inputs.
+ *      qualquer alteração no valor dos inputs e chama a função 11.
  * 5. Atualização do template no iframe
  *      Altera o caminho do iframe do preview de acordo com o valor do template do input de template.
  * 6. Mudança da visibilidade do iframe
@@ -62,6 +64,12 @@
  * 9. Envio do formulário.
  *      Envia a requisição para gerar a rifa, caso haja erro, mostra o erro na página, senão abre a conexão de WebSocket com o servidor e
  *      começa a receber as mensagens do progresso e por fim da rifa concluída.
+ * 10. Processamento da lista de vendedores
+ *      Valida a lista e adiciona o objeto com as turmas e pessoas ao datalist do input. 
+ * 11. Atualizar informações
+ *      Atualiza os elementos de informações da rifa.
+ * 12. Atualizar número das páginas
+ *      Atualiza o número total de páginas.
  */
 
 /* ------------------------------- EVENTOS -------------------------------
@@ -78,6 +86,12 @@
  *           Chama a função 2.3.
  *    C.4. Input da logo
  *           Chama a função 7.
+ *    C.5. Input da lista de vendedores
+ *           Chama a função 10.
+ *    C.6. Input nas folhas por vendedor
+ *           Chama a função 2.4.
+ *    C.7. Input nas folhas extra
+ *           Chama a função 2.5.
  * D. Alteração no select de tipo de vendedor
  *      Chama a função 3.
  * E. Alteração no select do template
@@ -86,20 +100,25 @@
  *      Chama a função 8.
  * G. Envio do formulário
  *      Chama a função 9.
- * H. Input nos inputs de nome e premiação
- *      Transforma seus respectivos valores em caixa alto.
  */
+
 import { io } from '/assets/socket.io.min.js';
 
-const iframe = document.getElementById('preview');
+const websocketServer = 'ws://localhost:3000/';
 
 const defaults = {
   nome: 'RIFA DE PÁSCOA',
   premiacao: 'CESTA DE CHOCOLATES',
   data: '06/04',
   preco: '2,00',
-  quantidadeDeFolhas: 300
+  template: 20,
+  quantidadeDeFolhas: 100,
+  folhasPorVendedor: 2,
+  folhasExtra: 50
 };
+
+const iframe = document.getElementById('preview');
+const form = document.getElementById('dados');
 
 const inputs = {
   nome: document.getElementById('nome'),
@@ -115,19 +134,43 @@ const inputs = {
   folhasExtra: document.getElementById('folhasExtra')
 };
 
+const labels = {
+  listaVendedores: document.querySelector('label[for="listaVendedores"]'),
+  folhasPorVendedor: document.querySelector('label[for="folhasPorVendedor"]'),
+  folhasExtra: document.querySelector('label[for="folhasExtra"]'),
+  quantidadeDeFolhas: document.querySelector('label[for="quantidadeDeFolhas"]')
+};
+
 const buttons = {
   submit: document.getElementById('submitButton'),
   previousPage: document.getElementById('previousPageButton'),
   nextPage: document.getElementById('nextPageButton')
 };
 
-const form = document.getElementById('dados');
+const pagination = {
+  currentPage: document.getElementById('currentPage'),
+  totalPages: document.getElementById('totalPages')
+};
 
-const totalPagesElement = document.getElementById('totalPages');
-const currentPageElement = document.getElementById('currentPage');
+const info = {
+  numeros: document.getElementById('infoNumeros'),
+  arrecadacao: document.getElementById('infoArrecadacao')
+};
+
+const progress = {
+  totalPages: document.getElementById('totalPages'),
+  currentPage: document.getElementById('currentPage'),
+  container: document.getElementById('progressContainer'),
+  message: document.getElementById('message'),
+  currentPage: document.getElementById('currentPageProgress'),
+  maxPage: document.getElementById('maxPageProgress'),
+  percentage: document.getElementById('percentageProgress'),
+  bar: document.getElementById('progressBar')
+};
 
 let currentPage = 1;
-let totalPages = 300;
+let totalPages = 100;
+let autoVendedor = false;
 
 // 1. Alteração do CSS do iframe
 function updateIframeStyle(iframe) {
@@ -244,68 +287,117 @@ function usePagesMask(input) {
 
   let numericValue = parseInt(onlyNumbers);
 
-  if (numericValue > 1000) {
+  if (numericValue > input.max) {
     input.value = lastValidPages;
   } else {
     input.value = numericValue.toString();
     lastValidPages = input.value;
   };
 
-  totalPagesElement.textContent = input.value;
-  totalPages = input.value;
+  updatePageNumber();
 
   currentPage = 1;
-  currentPageElement.textContent = currentPage;
+  progress.currentPage.textContent = currentPage;
+};
+
+// 2.4. Máscara das folhas por vendedor
+let lastValidFolhasPorVendedor = '';
+function useFolhasPorVendedorMask(input) {
+  let value = input.value;
+
+  let onlyNumbers = value.replace(/\D/g, '');
+
+  if (onlyNumbers === '') {
+    input.value = '';
+    lastValidFolhasPorVendedor = '';
+    return;
+  };
+
+  let numericValue = parseInt(onlyNumbers);
+
+  if (numericValue > input.max) {
+    input.value = lastValidFolhasPorVendedor;
+  } else {
+    input.value = numericValue.toString();
+    lastValidFolhasPorVendedor = input.value;
+  };
+
+  updatePageNumber();
+};
+
+// 2.5. Máscara das folhas extra
+let lastValidFolhasExtra = '';
+function useFolhasExtraMask(input) {
+  let value = input.value;
+
+  let onlyNumbers = value.replace(/\D/g, '');
+
+  if (onlyNumbers === '') {
+    input.value = '';
+    lastValidFolhasExtra = '';
+    return;
+  };
+
+  let numericValue = parseInt(onlyNumbers);
+
+  if (numericValue > input.max) {
+    input.value = lastValidFolhasExtra;
+  } else {
+    input.value = numericValue.toString();
+    lastValidFolhasExtra = input.value;
+  };
+
+  updatePageNumber();
 };
 
 // 3. Alternação dos inputs dependendo do tipo de vendedor
 function toggleVendedorInputs(input) {
-  const labelListaVendedores = document.querySelector('label[for="listaVendedores"]');
-  const labelFolhasPorVendedor = document.querySelector('label[for="folhasPorVendedor"]');
-  const labelFolhasExtra = document.querySelector('label[for="folhasExtra"]');
-  const labelQuantidadeDeFolhas = document.querySelector('label[for="quantidadeDeFolhas"]');
   const isAutomatico = input.value === "true";
 
   if (isAutomatico) {
     inputs.listaVendedores.style.display = "block";
-    labelListaVendedores.style.display = "block";
+    labels.listaVendedores.style.display = "block";
     inputs.listaVendedores.required = true;
 
     inputs.folhasPorVendedor.style.display = "block";
-    labelFolhasPorVendedor.style.display = "block";
+    labels.folhasPorVendedor.style.display = "block";
     inputs.folhasPorVendedor.required = true;
 
     inputs.folhasExtra.style.display = "block";
-    labelFolhasExtra.style.display = "block";
+    labels.folhasExtra.style.display = "block";
     inputs.folhasExtra.required = true;
 
     inputs.quantidadeDeFolhas.style.display = "none";
-    labelQuantidadeDeFolhas.style.display = "none";
+    labels.quantidadeDeFolhas.style.display = "none";
     inputs.quantidadeDeFolhas.required = false;
     inputs.quantidadeDeFolhas.value = "";
 
-    totalPagesElement.textContent = 300;
-    totalPages = 300;
+    autoVendedor = true;
   } else {
     inputs.listaVendedores.style.display = "none";
-    labelListaVendedores.style.display = "none";
+    labels.listaVendedores.style.display = "none";
     inputs.listaVendedores.required = false;
     inputs.listaVendedores.value = "";
+    inputs.listaVendedores.dataset.lista = "";
 
     inputs.folhasPorVendedor.style.display = "none";
-    labelFolhasPorVendedor.style.display = "none";
+    labels.folhasPorVendedor.style.display = "none";
     inputs.folhasPorVendedor.required = false;
     inputs.folhasPorVendedor.value = "";
 
     inputs.folhasExtra.style.display = "none";
-    labelFolhasExtra.style.display = "none";
+    labels.folhasExtra.style.display = "none";
     inputs.folhasExtra.required = false;
     inputs.folhasExtra.value = "";
 
     inputs.quantidadeDeFolhas.style.display = "block";
-    labelQuantidadeDeFolhas.style.display = "block";
+    labels.quantidadeDeFolhas.style.display = "block";
     inputs.quantidadeDeFolhas.required = true;
+
+    autoVendedor = false;
   };
+
+  updatePageNumber();
 };
 
 // 4. Atualização em tempo real do preview
@@ -316,6 +408,7 @@ function updatePlaceholders(iframe) {
   vendedorElement.textContent = '________________';
 
   function update() {
+    updateInfo();
     const template = Number(inputs.template.value);
 
     for (let i = 1; i < template + 1; i++) {
@@ -329,20 +422,31 @@ function updatePlaceholders(iframe) {
     Object.entries(inputs).forEach(([key, input]) => {
       const el = doc.querySelector(`[data-placeholder="${key}"]`);
 
-      if (!el) return;
-      if (key == 'vendedor') return;
-
       if (key == 'logo') {
         if (!input.dataset.base64) return;
         el.src = input.dataset.base64;
         return;
       };
 
+      if (autoVendedor) {
+        const folhasExtra = inputs.folhasExtra.value || defaults.folhasExtra;
+
+        const folhasPorVendedor = Number(inputs.folhasPorVendedor.value || defaults.folhasPorVendedor);
+        const vendedores = inputs.listaVendedores.dataset.lista ? Object.values(JSON.parse(inputs.listaVendedores.dataset.lista)).flat() : undefined;
+
+        if (!vendedores || currentPage > (vendedores.length * folhasPorVendedor)) return;
+
+        vendedorElement.textContent = vendedores[Math.ceil((currentPage) / folhasPorVendedor) - 1];
+      };
+
+      if (!el || key == 'vendedor') return;
+
       el.textContent = input.value.toUpperCase() || defaults[key].toUpperCase() || el.textContent.toUpperCase();
     });
   };
 
   Object.values(inputs).forEach(input => {
+    if (input.id == 'vendedor') return;
     input.addEventListener('input', update);
   });
 
@@ -423,12 +527,12 @@ function pagination(event) {
       if (currentPage == 1) return;
       currentPage--;
       updatePlaceholders(iframe);
-      currentPageElement.textContent = currentPage;
+      pagination.currentPage.textContent = currentPage;
     } else {
       if (currentPage >= totalPages) return;
       currentPage++;
       updatePlaceholders(iframe);
-      currentPageElement.textContent = currentPage;
+      pagination.currentPage.textContent = currentPage;
     };
   };
 };
@@ -441,25 +545,34 @@ async function formSubmit(event) {
   buttons.submit.innerText = 'Enviando...';
   buttons.submit.style.cursor = 'not-allowed';
 
-  const progressElement = document.getElementById('progress');
-  const messageElement = document.getElementById('message');
-  const currentPageProgress = document.getElementById('currentPageProgress');
-  const maxPageProgress = document.getElementById('maxPageProgress');
-  const percentageProgress = document.getElementById('percentageProgress');
-  const progressBar = document.getElementById('progressBar');
+  const manualPayload = {
+    vendedor: false,
+    nome: inputs.nome.value,
+    premiacao: inputs.premiacao.value,
+    data: inputs.data.value,
+    preco: inputs.preco.value,
+    folhas: inputs.quantidadeDeFolhas.value,
+    template: inputs.template.value,
+    logo: inputs.logo.dataset.base64
+  };
+
+  const autoPayload = {
+    vendedor: true,
+    nome: inputs.nome.value,
+    premiacao: inputs.premiacao.value,
+    data: inputs.data.value,
+    preco: inputs.preco.value,
+    folhasPorVendedor: inputs.folhasPorVendedor.value,
+    folhasExtra: inputs.folhasExtra.value,
+    listaVendedores: inputs.listaVendedores.dataset.lista,
+    template: inputs.template.value,
+    logo: inputs.logo.dataset.base64
+  };
 
   try {
     const response = await fetch('/gerar-rifa', {
       method: 'POST',
-      body: JSON.stringify({
-        nome: inputs.nome.value,
-        premiacao: inputs.premiacao.value,
-        data: inputs.data.value,
-        preco: inputs.preco.value,
-        folhas: inputs.quantidadeDeFolhas.value,
-        template: inputs.template.value,
-        logo: inputs.logo.dataset.base64
-      }),
+      body: JSON.stringify(autoVendedor ? autoPayload : manualPayload),
       headers: { 'Content-type': 'application/json' }
     });
 
@@ -467,22 +580,22 @@ async function formSubmit(event) {
 
     if (data.error) {
       console.log(`Erro: ${data.error}`);
-      messageElement.style.visibility = 'visible';
-      messageElement.innerHTML = `<p><b>Erro:</b> ${data.error}</p>`;
+      progress.message.style.visibility = 'visible';
+      progress.message.innerHTML = `<p><b>Erro:</b> ${data.error}</p>`;
       buttons.submit.disabled = false;
       buttons.submit.innerText = 'Gerar';
       buttons.submit.style.cursor = 'pointer';
       return;
     };
 
-    messageElement.style.visibility = 'hidden';
+    progress.message.style.visibility = 'hidden';
     buttons.submit.innerText = 'Iniciando geração...';
-    maxPageProgress.innerText = inputs.quantidadeDeFolhas.value;
-    progressElement.style.visibility = 'visible';
+    progress.maxPage.innerText = totalPages;
+    progress.container.style.visibility = 'visible';
 
     console.log(`Task ID: ${data.taskId}`);
 
-    const socket = new io('ws://localhost:3000/');
+    const socket = new io(websocketServer);
 
     socket.on('connect', () => {
       console.log('Websocket conectado!');
@@ -499,7 +612,7 @@ async function formSubmit(event) {
 
     socket.on('finished', (data) => {
       console.log(`Rifa finalizada: ${data.url}`);
-        buttons.submit.innerHTML = `<a href="${data.url}" target="_blank">Finalizado!</a>`;
+      buttons.submit.innerHTML = `<a href="${data.url}" target="_blank">Finalizado!</a>`;
     });
   } catch (error) {
     console.error(error);
@@ -511,9 +624,130 @@ async function formSubmit(event) {
   };
 };
 
+// 10. Processamento da lista de vendedores
+function processList(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const content = event.target.result;
+
+    if (typeof content === 'string') {
+      function validateFileContent(content) {
+        const groups = content
+          .split(/\n\s*\n/)
+          .map(g => g.trim())
+          .filter(g => g.length > 0);
+
+        if (groups.length < 1) {
+          return { valid: false, error: 'Nenhuma turma identificada.' };
+        };
+
+        if (groups.length > 5) {
+          return { valid: false, error: 'Máximo de 5 turmas permitidas.' };
+        };
+
+        for (let i = 0; i < groups.length; i++) {
+          const lines = groups[i]
+            .split('\n')
+            .map(l => l.trim());
+
+          if (lines.length < 2 || lines.length > 36) {
+            return {
+              valid: false,
+              error: `As turmas devem ter entre 1 e 35 pessoas.`
+            };
+          };
+
+          for (let j = 0; j < lines.length; j++) {
+            if (lines[j].length > 20) {
+              return {
+                valid: false,
+                error: `Máximo de 20 caracteres.`
+              };
+            };
+          };
+        };
+
+        return { valid: true };
+      };
+
+      function processData(content) {
+        const lista = {};
+
+        const groups = content
+          .split(/\n\s*\n/)
+          .map(g => g.trim())
+          .filter(g => g.length > 0);
+
+        groups.forEach((group) => {
+          const groupName = group.split(/\r?\n/)[0];
+          const people = group
+            .split('\n')
+            .map(l => l.trim());
+
+          let peopleList = [];
+          people.forEach((person) => {
+            if (person === groupName) return;
+            peopleList.push(person);
+          });
+          lista[groupName] = peopleList;
+        });
+        
+        return lista;
+      };
+
+
+      const result = validateFileContent(content);
+
+      if (!result.valid) {
+        alert(result.error);
+        input.value = '';
+        return;
+      };
+
+      const listaVend = processData(content);
+
+      input.setAttribute('data-lista', JSON.stringify(listaVend));
+
+      updatePlaceholders(iframe);
+
+      updatePageNumber();
+      updateInfo();
+    } else {
+      alert('A lista precisa ser um arquivo de texto válido.');
+      input.value = '';
+      return;
+    };
+  };
+
+  reader.readAsText(file);
+};
+
+// 11. Atualizar informações
+function updateInfo() {
+  const totalNumbers = totalPages * Number(inputs.template.value || defaults.template);
+  info.numeros.textContent = totalNumbers;
+  info.arrecadacao.textContent = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalNumbers * Number(inputs.preco.value.replace(',', '.') || defaults.preco.replace(',', '.')));
+};
+
+// 12. Atualizar número das páginas
+function updatePageNumber() {
+  totalPages = autoVendedor ?
+  ((Number(inputs.folhasExtra.value || defaults.folhasExtra)) + ((Number(inputs.folhasPorVendedor.value || defaults.folhasPorVendedor) * Number(inputs.listaVendedores.dataset.lista ? Object.values(JSON.parse(inputs.listaVendedores.dataset.lista)).flat().length : 0)))) :
+  (Number(inputs.quantidadeDeFolhas.value || defaults.quantidadeDeFolhas));
+
+  pagination.totalPages.textContent = totalPages;
+
+  currentPage = 1;
+  pagination.currentPage.innerText = currentPage;
+};
+
 // A. Carregamento da página
 window.addEventListener('load', () => {
-  document.getElementById('dados').reset();
+  form.reset();
   updatePlaceholders(iframe);
 });
 
@@ -544,9 +778,26 @@ inputs.logo.addEventListener('input', (event) => {
   processLogo(event.target);
 });
 
+// C.5. Input da lista de vendedores
+inputs.listaVendedores.addEventListener('input', (event) => {
+  processList(event.target);
+});
+
+// C.6. Input de folhas por vendedor
+inputs.folhasPorVendedor.addEventListener('input', (event) => {
+  useFolhasPorVendedorMask(event.target);
+});
+
+// C.7. Input de folhas extra
+inputs.folhasExtra.addEventListener('input', (event) => {
+  useFolhasExtraMask(event.target);
+});
+
 // D. Alteração no select de tipo de vendedor 
 inputs.vendedor.addEventListener('change', (event) => {
   toggleVendedorInputs(event.target);
+  updatePlaceholders(iframe);
+  updateInfo();
 });
 
 // E. Alteração no select do template

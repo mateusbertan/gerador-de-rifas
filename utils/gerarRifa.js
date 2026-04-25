@@ -17,12 +17,31 @@ export default async function gerarRifa(rifa, taskId, io) {
 
   let htmlFinal = '';
   let numeroAtual = 1;
+  let vendedores = [];
+  let totalFolhas;
 
-  const bar = logger.progress.start(Number(rifa.folhas), 0, taskId);
+  if (rifa.vendedor) {
+    const lista = JSON.parse(rifa.listaVendedores);
+    totalFolhas = Number(rifa.folhasExtra) + (Number(rifa.folhasPorVendedor) * Object.values(lista).flat().length);
 
-  for (let i = 0; i < Number(rifa.folhas); i++) {
+    Object.values(lista).flat().forEach((person) => {
+      for (let i = 0; i < Number(rifa.folhasPorVendedor); i++) {
+        vendedores.push(person);
+      };
+    });
+
+    for (let i = 0; i < Number(rifa.folhasExtra); i++) {
+      vendedores.push('________________');
+    };
+  } else {
+    totalFolhas = Number(rifa.folhas);
+  };
+
+  const bar = io ? undefined : logger.progress.start(totalFolhas, 0);
+
+  for (let i = 0; i < totalFolhas; i++) {
     let html = template
-      .replace(/{{VENDEDOR}}/g, '________________')
+      .replace(/{{VENDEDOR}}/g, rifa.vendedor ? vendedores[i] : '________________')
       .replace(/{{RIFA}}/g, rifa.nome.toUpperCase())
       .replace(/{{PREMIAÇÃO}}/g, rifa.premiacao.toUpperCase())
       .replace(/{{DATA}}/g, rifa.data)
