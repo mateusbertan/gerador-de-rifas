@@ -90,6 +90,14 @@ form label {
   row-gap: 5px;
 }
 
+#nome, #premiacao {
+  text-transform: uppercase;
+}
+
+#nome::placeholder, #premiacao::placeholder {
+  text-transform: none;
+}
+
 .precoInput {
   display: grid;
   grid-template-columns: 15% 85%;

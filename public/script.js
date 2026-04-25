@@ -565,12 +565,5 @@ inputs.template.addEventListener('change', (event) => {
 
 // G. Envio do formulário
 form.addEventListener('submit', async (event) => {
-  formSubmit(event);
-});
-
-// H. Input nos inputs de nome e premiação
-[inputs.nome, inputs.premiacao].forEach((input) => {
-  input.addEventListener('input', (event) => {
-    event.target.value = event.target.value.toUpperCase();
-  });
-});
+  formSubmit(event);}
+);
