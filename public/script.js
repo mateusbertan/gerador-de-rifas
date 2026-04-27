@@ -521,7 +521,7 @@ function processLogo(input) {
 };
 
 // 8. Paginação
-function pagination(event) {
+function doPagination(event) {
   if (event.type === 'click') {
     if (event.target.classList.contains('previousClick')) {
       if (currentPage == 1) return;
@@ -809,7 +809,7 @@ inputs.template.addEventListener('change', (event) => {
 // F. Clique nos botões de paginação
 [buttons.previousPage, buttons.nextPage].forEach((button) => {
   button.addEventListener('click', (event) => {
-    pagination(event);
+    doPagination(event);
   });
 });
 
