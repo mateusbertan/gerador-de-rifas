@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { randomUUID } from 'crypto';
+import crypto from 'crypto';
 
 import logger from './utils/logger.js';
 import gerarRifa from './utils/gerarRifa.js';
@@ -17,8 +17,22 @@ const io = new Server(httpServer);
 
 if (process.env.NODE_ENV = 'production') app.set('trust proxy', 1);
 
-app.use(helmet());
-app.disable('x-powered-by');
+app.use((req, res, next) => {
+  res.locals.cspNonce = crypto.randomBytes(16).toString('hex');
+  next();
+});
+
+app.use((req, res, next) => {
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "script-src": ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+      },
+    },
+  })(req, res, next);
+});
+
 app.use(cors({
   methods: ['GET', 'POST'],
   origin: `${config.server.url}:${config.server.port}`
@@ -69,7 +83,7 @@ app.post('/gerar-rifa', async (req, res) => {
     return res.status(400).json({ error: validationError });
   };
 
-  const taskId = randomUUID();
+  const taskId = crypto.randomUUID();
 
   try {
     activeGenerations++;
