@@ -606,7 +606,7 @@ async function formSubmit(event) {
     socket.on('progress', (data) => {
       console.log(`Progresso: ${data.percent}% | ${data.page} páginas`);
       progress.currentPage.innerText = data.page;
-      progress.percentage.innerText = `${data.percent}%`;
+      progress.percentage.innerText = `${Math.round(data.percent)}%`;
       progress.bar.style.setProperty('--progress', `${data.percent}%`);
     });
 

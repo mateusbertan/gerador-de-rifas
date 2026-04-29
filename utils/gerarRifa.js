@@ -72,7 +72,7 @@ export default async function gerarRifa(rifa, taskId, io) {
     const [copiedPage] = await pdfFinal.copyPages(tempDoc, [0]);
     pdfFinal.addPage(copiedPage);
 
-    const percent = Math.round(((i + 1) / totalFolhas) * 100);
+    const percent = (((i + 1) / totalFolhas) * 100).toFixed(2);
 
     if (bar) bar.increment();
 
