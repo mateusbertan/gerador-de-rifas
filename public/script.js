@@ -287,7 +287,7 @@ function usePagesMask(input) {
 
   let numericValue = parseInt(onlyNumbers);
 
-  if (numericValue > input.max) {
+  if (numericValue > input.max || numericValue < input.min) {
     input.value = lastValidPages;
   } else {
     input.value = numericValue.toString();
@@ -315,7 +315,7 @@ function useFolhasPorVendedorMask(input) {
 
   let numericValue = parseInt(onlyNumbers);
 
-  if (numericValue > input.max) {
+  if (numericValue > input.max || numericValue < input.min) {
     input.value = lastValidFolhasPorVendedor;
   } else {
     input.value = numericValue.toString();
@@ -340,7 +340,7 @@ function useFolhasExtraMask(input) {
 
   let numericValue = parseInt(onlyNumbers);
 
-  if (numericValue > input.max) {
+  if (numericValue > input.max || numericValue < input.min) {
     input.value = lastValidFolhasExtra;
   } else {
     input.value = numericValue.toString();
@@ -828,5 +828,5 @@ inputs.template.addEventListener('change', (event) => {
 
 // G. Envio do formulário
 form.addEventListener('submit', async (event) => {
-  formSubmit(event);}
-);
+  formSubmit(event);
+});
