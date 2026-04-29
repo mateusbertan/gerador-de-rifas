@@ -614,6 +614,19 @@ async function formSubmit(event) {
       console.log(`Rifa finalizada: ${data.url}`);
       buttons.submit.innerHTML = `<a href="${data.url}" target="_blank">Finalizado!</a>`;
     });
+
+    socket.on('rifa_error', (data) => {
+      progress.message.style.visibility = 'visible';
+      progress.message.innerHTML = '<p><strong>Erro:</strong> Ocorreu um erro inesperado.</p>';
+      progress.currentPage.innerText = 0;
+      progress.percentage.innerText = `0%`;
+      progress.bar.style.setProperty('--progress', `0%`);
+      progress.container.style.visibility = 'hidden';
+      buttons.submit.disabled = false;
+      buttons.submit.innerText = 'Gerar';
+      buttons.submit.style.cursor = 'pointer';
+      setInputsDisabled(false);
+    });
   } catch (error) {
     console.error(error);
     progress.message.style.visibility = 'visible';

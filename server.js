@@ -97,9 +97,8 @@ app.post('/gerar-rifa', async (req, res) => {
     await gerarRifa(req.body, taskId, io);
   } catch (error) {
     logger.error(`<${taskId}> Erro na geração: ${error.stack}`);
-    res.status(500).json({
-      error: 'Falha na geração.',
-      taskId: taskId
+    io.to(taskId).emit('rifa_error', {
+      msg: 'Ocorreu um erro inesperado.'
     });
   } finally {
     activeGenerations--;
