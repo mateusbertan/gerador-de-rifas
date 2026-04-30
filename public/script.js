@@ -177,6 +177,7 @@ const setInputsDisabled = (status) => {
 let currentPage = 1;
 let totalPages = 100;
 let autoVendedor = false;
+let gerado = false;
 
 // 1. Alteração do CSS do iframe
 function updateIframeStyle(iframe) {
@@ -411,9 +412,22 @@ function updatePlaceholders(iframe) {
   const doc = iframe.contentDocument;
 
   const vendedorElement = doc.querySelector(`[data-placeholder="vendedor"]`);
-  vendedorElement.textContent = '________________';
+  vendedorElement.textContent = '__________________';
 
   function update() {
+    if (gerado) {
+      progress.message.style.visibility = 'hidden';
+      progress.message.innerHTML = '';
+      progress.currentPage.innerText = 0;
+      progress.percentage.innerText = `0%`;
+      progress.bar.style.setProperty('--progress', `0%`);
+      progress.container.style.visibility = 'hidden';
+      buttons.submit.disabled = false;
+      buttons.submit.innerText = 'Gerar';
+      buttons.submit.style.cursor = 'pointer';
+      gerado = false;
+    };
+
     updateInfo();
     const template = Number(inputs.template.value);
 
@@ -508,7 +522,7 @@ function processLogo(input) {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const size = 512;
-      
+
       canvas.width = size;
       canvas.height = size;
 
@@ -599,7 +613,7 @@ async function formSubmit(event) {
 
     progress.message.style.visibility = 'hidden';
     buttons.submit.innerText = 'Iniciando geração...';
-    progress.maxPage.innerText = totalPages;
+    progress.maxPage.innerText = autoVendedor ? totalPages + Object.keys(JSON.parse(inputs.listaVendedores.dataset.lista)).length + (Math.ceil(Number(inputs.folhasExtra.value) / (35 * Number(inputs.folhasPorVendedor.value)))) : totalPages;
     progress.container.style.visibility = 'visible';
 
     console.log(`Task ID: ${data.taskId}`);
@@ -609,11 +623,15 @@ async function formSubmit(event) {
     socket.on('connect', () => {
       console.log('Websocket conectado!');
       socket.emit('join-task', data.taskId);
-      buttons.submit.innerText = 'Gerando...';
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Websocket desconectado!');
     });
 
     socket.on('progress', (data) => {
       console.log(`Progresso: ${data.percent}% | ${data.page} páginas`);
+      buttons.submit.innerText = 'Gerando...';
       progress.currentPage.innerText = data.page;
       progress.percentage.innerText = `${Math.round(data.percent)}%`;
       progress.bar.style.setProperty('--progress', `${data.percent}%`);
@@ -623,6 +641,7 @@ async function formSubmit(event) {
       console.log(`Rifa finalizada: ${data.url}`);
       buttons.submit.innerHTML = `<a href="${data.url}" target="_blank">Finalizado!</a>`;
       window.open(data.url, '_blank');
+      gerado = true;
       setInputsDisabled(false);
     });
 
@@ -720,7 +739,7 @@ function processList(input) {
           });
           lista[groupName] = peopleList;
         });
-        
+
         return lista;
       };
 
@@ -761,8 +780,8 @@ function updateInfo() {
 // 12. Atualizar número das páginas
 function updatePageNumber() {
   totalPages = autoVendedor ?
-  ((Number(inputs.folhasExtra.value || defaults.folhasExtra)) + ((Number(inputs.folhasPorVendedor.value || defaults.folhasPorVendedor) * Number(inputs.listaVendedores.dataset.lista ? Object.values(JSON.parse(inputs.listaVendedores.dataset.lista)).flat().length : 0)))) :
-  (Number(inputs.quantidadeDeFolhas.value || defaults.quantidadeDeFolhas));
+    ((Number(inputs.folhasExtra.value || defaults.folhasExtra)) + ((Number(inputs.folhasPorVendedor.value || defaults.folhasPorVendedor) * Number(inputs.listaVendedores.dataset.lista ? Object.values(JSON.parse(inputs.listaVendedores.dataset.lista)).flat().length : 0)))) :
+    (Number(inputs.quantidadeDeFolhas.value || defaults.quantidadeDeFolhas));
 
   pagination.totalPages.textContent = totalPages;
 
