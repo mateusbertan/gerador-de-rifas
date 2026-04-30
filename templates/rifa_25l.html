@@ -15,23 +15,24 @@
       box-sizing: border-box;
     }
 
-    @page {
-      size: A4 portrait;
-      margin: 10mm;
-    }
-
     html, body {
       width: 210mm;
       height: 297mm;
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
       display: flex;
       flex-direction: column;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 12pt;
+      break-after: page;
     }
 
-    /* Guia para o desenvolvimento */
+    @page {
+      size: A4 portrait;
+    }
+
     body {
-      border: 3px dotted #000;
+      border: 3px dotted #000; /* Guia para o desenvolvimento */
+      padding: 16mm 20mm;
     }
 
     /* Remove o guia na impressão */
@@ -42,46 +43,46 @@
     }
 
     header {
+      width: 100%;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      height: 12%;
       text-align: center;
-      padding: 5mm 0mm;
+      font-size: 11pt;
+      margin: 0 auto;
+      padding-bottom: 12px;
     }
 
     header section {
-      flex: 1;
+      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      height: 100%;
-      line-height: 150%;
+      line-height: 1.6;
     }
 
     header .vendedor {
       flex: 0 0 30%;
+      align-items: start;
     }
 
     header .dados {
       flex: 0 0 40%;
+      align-items: center;
     }
 
-    header {
-      font-size: 11pt;
+    header .logo {
+      flex: 0 0 30%;
+      align-items: end;
     }
 
     .titulorifa {
       font-size: 12pt;
     }
 
-    .nomevendedor {
+    .nomevendedor, .premiacao, .preco, .data {
       font-size: 10pt;
-    }
-
-    header .logo {
-      flex: 0 0 30%;
+      vertical-align: center;
     }
 
     header .logo img {
@@ -91,29 +92,32 @@
     }
 
     main {
-      height: 83%;
+      width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
-      align-items: start;
-      padding: 5mm;
+      align-items: flex-start;
+      margin: 0 auto;
     }
 
     table {
-      border: 1px solid black;
-      border-collapse: collapse;
-      width: 90%;
+      width: 100%;
+      height: 100%;
       text-align: left;
-      font-size: 12pt;
+      font-size: 11pt;
+      border: 1px solid #000;
+      border-collapse: collapse;
+      margin: 0 auto;
     }
 
     td {
-      border: 1px solid black;
-      padding: 8px 10px; /* Altura das linhas */
+      height: auto;
+      border: 1px solid #000;
+      padding: 4px;
     }
 
     td:first-child {
       width: 10%;
-      text-align: left;
     }
 
     td:last-child {
@@ -121,21 +125,21 @@
     }
 
     footer {
-      height: 5%;
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      padding: 5mm;
+      align-items: flex-end;
+      margin: 0 auto;
+      padding-top: 10px;
     }
 
     .creditos {
       width: 90%;
-      text-align: end;
-      font-size: 12px;
-      color: #666;
+      text-align: right;
+      font-size: 8pt;
       line-height: 1.2;
+      color: #666;
     }
   </style>
 </head>
@@ -149,9 +153,9 @@
 
     <section class="dados">
       <p class="titulorifa"><b><span data-placeholder="nome">{{RIFA}}</span></b></p>
-      <p>PREMIAÇÃO: <span data-placeholder="premiacao">{{PREMIAÇÃO}}</span></p>
-      <p>DATA: <span data-placeholder="data">{{DATA}}</span></p>
-      <p>PREÇO: R$ <span data-placeholder="preco">{{PREÇO}}</span></p>
+      <p>PREMIAÇÃO: <span data-placeholder="premiacao" class="premiacao">{{PREMIAÇÃO}}</span></p>
+      <p>DATA: <span data-placeholder="data" class="data">{{DATA}}</span></p>
+      <p>PREÇO: <span class="preco">R$ <span data-placeholder="preco">{{PREÇO}}</span></span></p>
     </section>
 
     <section class="logo">
@@ -263,8 +267,9 @@
     </table>
   </main>
   <footer>
+    <!-- AVISO: A remoção ou alteração destes créditos sem autorização do autor constitui violação dos termos de licença. -->
     <section class="creditos">
-      <p>2026 © Rifa gerada em programa desenvolvido por Mateus Bertan</p>
+      <p>Gerado em programa desenvolvido por Mateus Bertan :)</p>
     </section>
   </footer>
 </body>

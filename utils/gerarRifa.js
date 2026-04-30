@@ -55,17 +55,14 @@ export default async function gerarRifa(rifa, taskId, io) {
     };
 
     htmlFinal = `
-      <div class="page" style="page-break-after: always;">
         ${html}
-      </div>
     `;
 
     await page.setContent(htmlFinal, { waitUntil: 'domcontentloaded' });
 
     const pageBuffer = await page.pdf({
       format: 'A4',
-      printBackground: true,
-      margin: { top: '10mm', bottom: '10mm', left: '10mm', right: '10mm' }
+      printBackground: true
     });
 
     const tempDoc = await PDFDocument.load(pageBuffer);
