@@ -168,6 +168,12 @@ const progress = {
   bar: document.getElementById('progressBar')
 };
 
+const setInputsDisabled = (status) => {
+  Object.values(inputs).forEach(input => {
+    if (input) input.disabled = status;
+  });
+};
+
 let currentPage = 1;
 let totalPages = 100;
 let autoVendedor = false;
@@ -545,6 +551,8 @@ async function formSubmit(event) {
   buttons.submit.innerText = 'Enviando...';
   buttons.submit.style.cursor = 'not-allowed';
 
+  setInputsDisabled(true);
+
   const manualPayload = {
     vendedor: false,
     nome: inputs.nome.value,
@@ -585,6 +593,7 @@ async function formSubmit(event) {
       buttons.submit.disabled = false;
       buttons.submit.innerText = 'Gerar';
       buttons.submit.style.cursor = 'pointer';
+      setInputsDisabled(false);
       return;
     };
 
@@ -613,6 +622,8 @@ async function formSubmit(event) {
     socket.on('finished', (data) => {
       console.log(`Rifa finalizada: ${data.url}`);
       buttons.submit.innerHTML = `<a href="${data.url}" target="_blank">Finalizado!</a>`;
+      window.open(data.url, '_blank');
+      setInputsDisabled(false);
     });
 
     socket.on('rifa_error', (data) => {
@@ -634,6 +645,7 @@ async function formSubmit(event) {
     buttons.submit.disabled = false;
     buttons.submit.innerText = 'Gerar';
     buttons.submit.style.cursor = 'pointer';
+    setInputsDisabled(false);
   };
 };
 
