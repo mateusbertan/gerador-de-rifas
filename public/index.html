@@ -35,7 +35,7 @@
             type="text"
             name="nome"
             id="nome"
-            title="Nome da sua rifa"
+            title="Nome da rifa"
             placeholder="Ex.: Rifa de Páscoa"
             minlength="4"
             maxlength="25"
@@ -47,7 +47,7 @@
             type="text"
             name="premiacao"
             id="premiacao"
-            title="Premiação da sua rifa"
+            title="Premiação da rifa"
             placeholder="Ex.: Cesta de Chocolates"
             minlength="4"
             maxlength="20"
@@ -87,7 +87,7 @@
           <input
             type="file"
             accept="image/*"
-            title="Envie o arquivo da logo"
+            title="Envie o arquivo da logo da rifa"
             multiple="false"
             name="logo"
             id="logo"
@@ -114,9 +114,10 @@
           <label for="folhasPorVendedor" style="display: none;">Folhas por vendedor:</label>
           <input
             type="text"
+            inputmode="numeric"
             name="folhasPorVendedor"
             id="folhasPorVendedor"
-            title="Folhas de rifa por vendedor"
+            title="Folhas de rifa por vendedor (até 5)"
             placeholder="Ex.: 2"
             minlength="1"
             maxlength="1"
@@ -128,9 +129,10 @@
           <label for="folhasExtra" style="display: none;">Folhas extra:</label>
           <input
             type="text"
+            inputmode="numeric"
             name="folhasExtra"
             id="folhasExtra"
-            title="Folhas extra"
+            title="Folhas extra (até 300)"
             placeholder="Ex.: 50"
             minlength="1"
             maxlength="3"
@@ -145,7 +147,7 @@
             inputmode="numeric"
             name="quantidadeDeFolhas"
             id="quantidadeDeFolhas"
-            title="Quantidade de folhas de rifa"
+            title="Quantidade de folhas de rifa (até 1000)"
             placeholder="Ex.: 100"
             min="1"
             max="1000"
@@ -180,8 +182,8 @@
       </div>
 
       <div class="progressContainer" style="visibility: hidden;" id="progressContainer">
-        <p>Página <strong id="currentPageProgress">0</strong> de <strong id="maxPageProgress">0</strong>...</p>
-        <p id="percentageProgress">0%</p>
+        <p>Página <strong id="currentPageProgress">0</strong> de <strong id="totalPagesProgress">0</strong>...</p>
+        <p id="progressPercentage">0%</p>
         <div id="progressBar" class="progressBar"></div>
       </div>
 
@@ -216,7 +218,6 @@
   <footer>
     <p>Desenvolvido por <a target="_blank" href="https://github.com/mateusbertan">Mateus Bertan</a></p>
   </footer>
-
   <noscript>
     <div class="noscript-overlay">
       <div class="noscript-content">
