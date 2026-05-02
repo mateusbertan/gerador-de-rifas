@@ -16,9 +16,9 @@ body {
   display: grid;
   grid-template-rows: 8% 1fr 5%;
   grid-template-areas:
-  "header"
-  "main"
-  "footer";
+    "header"
+    "main"
+    "footer";
   gap: 30px;
   min-height: 100vh;
   font-family: var(--fonte);
@@ -26,7 +26,7 @@ body {
   background-color: var(--cor-fundo);
 }
 
-/* Header */  
+/* Header */
 
 header {
   grid-area: header;
@@ -56,7 +56,7 @@ section {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 15px rgba(0,0,0,.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 section h2 {
@@ -90,11 +90,13 @@ form label {
   row-gap: 5px;
 }
 
-#nome, #premiacao {
+#nome,
+#premiacao {
   text-transform: uppercase;
 }
 
-#nome::placeholder, #premiacao::placeholder {
+#nome::placeholder,
+#premiacao::placeholder {
   text-transform: none;
 }
 
@@ -124,7 +126,7 @@ section.info {
 
 .progressContainer {
   display: grid;
-  grid-template-columns: 1fr auto; 
+  grid-template-columns: 1fr auto;
   gap: 8px;
   width: 100%;
 }
@@ -148,7 +150,7 @@ section.info {
 }
 
 .progressBar::before {
-  content: '';
+  content: "";
   display: block;
   height: 100%;
   width: var(--progress, 0%);
@@ -225,7 +227,8 @@ footer {
   width: 100%;
 }
 
-footer p, footer a {
+footer p,
+footer a {
   color: white;
 }
 
@@ -252,16 +255,16 @@ footer p, footer a {
 }
 
 .noscript-content h1 {
-  font-size: 2rem
+  font-size: 2rem;
 }
 
 /* Responsividade */
 
 @media (max-width: 950px) {
-  section.dados, 
-  section.info, 
+  section.dados,
+  section.info,
   section.preview {
     grid-column: 1 / -1;
-    grid-row: auto ;
+    grid-row: auto;
   }
 }
