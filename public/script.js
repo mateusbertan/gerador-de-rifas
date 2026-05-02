@@ -117,6 +117,7 @@ const updatePreviewTemplate = (template, timeout) => {
   if (iframe.src != `/templates/rifa_${template}l.html`) {
     setTimeout(() => (iframe.src = `/templates/rifa_${template}l.html`), timeout);
   }
+  updateInfo();
 };
 
 const setInputsDisabled = (status) => {
@@ -483,7 +484,9 @@ const toggleInputs = (event) => {
   setVisibility(isAutomatico, autoInputs);
   setVisibility(!isAutomatico, manualInputs);
 
+  updatePlaceholders();
   updatePageNumber();
+  updateInfo();
 };
 
 // Atualização dos placeholders do iframe
