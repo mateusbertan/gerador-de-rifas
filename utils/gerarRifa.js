@@ -83,6 +83,7 @@ export default async function gerarRifa(rifa, taskId, io) {
 
   for (let i = 0; i < totalFolhas; i++) {
     let html;
+    let extraStyle;
 
     if (paginasVendedores.includes(i)) {
       const lista = JSON.parse(rifa.listaVendedores);
@@ -128,6 +129,7 @@ export default async function gerarRifa(rifa, taskId, io) {
                 : "&nbsp;",
             );
           if (Object.values(lista)[index][n - 1]) ultimoNumero += soma;
+          if (!Object.values(lista)[index][n]) extraStyle += `tr:nth-child(${n + 1}) td { border: none !important; }\n`;
         }
       }
     } else {
@@ -160,6 +162,13 @@ export default async function gerarRifa(rifa, taskId, io) {
     `;
 
     await page.setContent(htmlFinal, { waitUntil: "domcontentloaded" });
+
+    if (extraStyle) {
+      await page.addStyleTag({
+        content: extraStyle,
+      });
+      extraStyle = "";
+    }
 
     const pageBuffer = await page.pdf({
       format: "A4",
