@@ -15,8 +15,6 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-if ((process.env.NODE_ENV = "production")) app.set("trust proxy", 1);
-
 app.use((req, res, next) => {
   res.locals.cspNonce = crypto.randomBytes(16).toString("hex");
   next();
@@ -50,23 +48,26 @@ app.use(
 
 app.use(express.json({ limit: config.server.requestSizeLimit }));
 
-app.use(
-  rateLimit({
-    windowMs: config.server.minutesToRememberTimeout * 60 * 1000,
-    limit: config.server.maxRequestsUntilTimeout,
-    standardHeaders: "draft-8",
-    legacyHeaders: false,
-    ipv6Subnet: 56,
-    message: {
-      error:
-        "Você está fazendo muitas requisições. Tente novamente mais tarde!",
-    },
-  }),
-);
-
 app.use(express.static("public"));
 app.use("/templates", express.static("templates"));
 app.use("/rifas", express.static("rifas_geradas"));
+
+if ((process.env.NODE_ENV = "production")) {
+  app.set("trust proxy", 1);
+  app.use(
+    rateLimit({
+      windowMs: config.server.minutesToRememberTimeout * 60 * 1000,
+      limit: config.server.maxRequestsUntilTimeout,
+      standardHeaders: "draft-8",
+      legacyHeaders: false,
+      ipv6Subnet: 56,
+      message: {
+        error:
+          "Você está fazendo muitas requisições. Tente novamente mais tarde!",
+      },
+    }),
+  );
+}
 
 let activeGenerations = 0;
 
