@@ -36,6 +36,11 @@ app.use((req, res, next) => {
   })(req, res, next);
 });
 
+app.use((req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex');
+  next();
+});
+
 app.use(
   cors({
     methods: ["GET", "POST"],
