@@ -8,6 +8,10 @@
     "minutesToRememberTimeout": 5,
     "requestSizeLimit": "1mb"
   },
+  "autoDeleteFiles": {
+    "enabled": true,
+    "hoursToKeep": 24
+  },
   "templates": [
     {
       "name": "Rifa de 20 linhas",
