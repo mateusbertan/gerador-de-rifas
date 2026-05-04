@@ -17,7 +17,9 @@ export default async function gerarRifa(rifa, taskId, io) {
     "utf8",
   );
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   const page = await browser.newPage();
 
   const pdfFinal = await PDFDocument.create();
